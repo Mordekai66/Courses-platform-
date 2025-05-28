@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Oi&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: "Titillium Web";
+    font-family: "Cairo";
+}
+
+body{
+    background-color: #F9FAFB;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100vh;
+    background-image: url(888.png) ;
+    background-size: 600px 600px;
+    background-repeat: no-repeat;
+    font-family: Cairo;
+}
+
+.login-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 500px;
+    padding: 30px 0;
+    font-family: Cairo;
+    direction: rtl;
+    text-align: right;
+}
+
+.login-header{
+    text-align: center;
+    margin: 20px 0 40px 0;
+}
+
+.login-header header{
+    font-size: 50px;
+    font-weight: 700;
+    color: #38b6af;
+}
+
+.input-box .input-field{
+    width: 100%;
+    height: 50px;
+    font-size: 17px;
+    padding: 0 25px;
+    margin-bottom: 25px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0px 5px 10px 1px rgba(0,0,0, 0.2);
+    outline: none;
+    transition: .3s;
+}
+::placeholder{
+    font-weight: 500;
+    color: #222;
+}
+.input-field:focus{
+    width: 120%;
+}
+
+.submit-btn{
+    
+    font-size: 1rem;
+    padding: 8px 30px;
+    background: #38b6af;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: .3s;
+    color: white;
+}
+
+.submit-btn:hover{
+    background: #8B5CF6;
+    transform: scale(1.1,1);
+}

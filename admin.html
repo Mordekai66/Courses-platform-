@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>صفحة الأدمن - إدارة الطلاب</title>
+  <style>
+    body {
+      font-family: Arial;
+      direction: rtl;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    form, table {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    input, select {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #aaa;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>إضافة طالب جديد</h2>
+  <form id="addStudentForm">
+    <input type="text" name="student_code" placeholder="كود الطالب" required>
+    <input type="text" name="full_name" placeholder="الاسم بالكامل" required>
+    <select name="stage" required>
+      <option value="">-- اختر المرحلة --</option>
+      <option value="ابتدائي">ابتدائي</option>
+      <option value="اعدادي">اعدادي</option>
+      <option value="ثانوي">ثانوي</option>
+    </select>
+    <input type="number" name="age" placeholder="العمر" required>
+    <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+    <input type="text" name="phone" placeholder="رقم الهاتف" required>
+    <input type="text" name="guardian_name" placeholder="اسم ولي الأمر" required>
+    <input type="text" name="guardian_phone" placeholder="رقم ولي الأمر" required>
+    <button type="submit">إضافة الطالب</button>
+  </form>
+
+  <h2>قائمة الطلاب</h2>
+  <table id="studentsTable">
+    <thead>
+      <tr>
+        <th>الاسم</th>
+        <th>المرحلة</th>
+        <th>العمر</th>
+        <th>الإيميل</th>
+        <th>الهاتف</th>
+        <th>ولي الأمر</th>
+        <th>رقم ولي الأمر</th>
+        <th>تعديل</th>
+        <th>حذف</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const API_BASE = "http://localhost:5000";
+
+    async function loadStudents() {
+      const res = await fetch(`${API_BASE}/students`);
+      const students = await res.json();
+      const tbody = document.querySelector("#studentsTable tbody");
+      tbody.innerHTML = "";
+
+      students.forEach(student => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><input value="${student.full_name}" onchange="updateField(${student.id}, 'full_name', this.value)"></td>
+          <td>
+            <select onchange="updateField(${student.id}, 'stage', this.value)">
+              <option ${student.stage === 'ابتدائي' ? 'selected' : ''}>ابتدائي</option>
+              <option ${student.stage === 'اعدادي' ? 'selected' : ''}>اعدادي</option>
+              <option ${student.stage === 'ثانوي' ? 'selected' : ''}>ثانوي</option>
+            </select>
+          </td>
+          <td><input type="number" value="${student.age}" onchange="updateField(${student.id}, 'age', this.value)"></td>
+          <td><input value="${student.email}" onchange="updateField(${student.id}, 'email', this.value)"></td>
+          <td><input value="${student.phone}" onchange="updateField(${student.id}, 'phone', this.value)"></td>
+          <td><input value="${student.guardian_name}" onchange="updateField(${student.id}, 'guardian_name', this.value)"></td>
+          <td><input value="${student.guardian_phone}" onchange="updateField(${student.id}, 'guardian_phone', this.value)"></td>
+          <td><button onclick="saveRow(${student.id}, this)">💾</button></td>
+          <td><button onclick="deleteStudent(${student.id}, this)">🗑️</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    const tempData = {};
+    function updateField(id, key, value) {
+      if (!tempData[id]) tempData[id] = {};
+      tempData[id][key] = value;
+    }
+
+    async function saveRow(id, btn) {
+      if (!tempData[id]) return alert("لا يوجد تعديلات");
+      btn.innerText = "⏳";
+      const res = await fetch(`${API_BASE}/edit_student/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tempData[id])
+      });
+      btn.innerText = "💾";
+      const data = await res.json();
+      alert(data.message || data.error);
+      loadStudents();
+    }
+
+    async function deleteStudent(id, btn) {
+      if (!confirm("هل أنت متأكد أنك تريد حذف هذا الطالب؟")) return;
+      btn.innerText = "⏳";
+      const res = await fetch(`${API_BASE}/delete_student/${id}`, {
+        method: "DELETE"
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+      loadStudents();
+    }
+
+    document.getElementById("addStudentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const jsonData = {};
+      formData.forEach((val, key) => jsonData[key] = val);
+
+      const res = await fetch(`${API_BASE}/add_student`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(jsonData)
+      });
+
+      const data = await res.json();
+      alert(data.message || data.error);
+      e.target.reset();
+      loadStudents();
+    });
+
+    loadStudents();
+  </script>
+</body>
+</html>

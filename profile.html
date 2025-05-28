@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ملف الطالب</title>
+  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+
+    <header>
+        <a href="loged.html"><img src="assets/logo2.svg" alt="logo"></a>   
+        <nav class="navigation">
+            <ul>
+                <li><button id="darkModeToggle" class="dark-mode-btn">
+                    <span class="icon">🌙</span>
+                  </button>
+                  </li>
+                <!-- <li><a href="login.html" class="fancy-link">تسجيل الدخول</a></li> -->
+                <!-- <li><a href="#courses" class="fancy-link">Courses</a></li> -->
+                <li><a href="" class="fancy-link">👨‍🎓</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <hr>
+
+  <section class="profile-section">
+    <div class="profile-card">
+      <img src="assets/hero (2).jpg" alt="صورة الطالب" class="profile-pic">
+       <h1 id="studentName" style="margin: 10px 0;"></h1>
+      <p class="student-info">طالب بالمرحلة الثانوية</p>
+    </div>
+  </section>
+
+  <section class="courses-section">
+    <h2>الدورات المكتملة ✅</h2>
+    <ul class="courses-list">
+      <a href="lecture.html"><li>أساسيات البرمجة</li></a>
+      <a href="lecture.html"><li>تصميم واجهات المستخدم</li></a>
+      <a href="lecture.html"><li>اللغة الإنجليزية المتقدمة</li></a>
+    </ul>
+  </section>
+
+  <section class="exams-section">
+    <h2>نتائج الامتحانات 📊</h2>
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>المادة</th>
+          <th>التاريخ</th>
+          <th>النتيجة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>برمجة</td>
+          <td>1/5/2025</td>
+          <td>85%</td>
+        </tr>
+        <tr>
+          <td>تصميم</td>
+          <td>3/5/2025</td>
+          <td>90%</td>
+        </tr>
+        <tr>
+          <td>إنجليزي</td>
+          <td>5/5/2025</td>
+          <td>95%</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr />
+      <footer>
+        <p> Built by Shika & monem
+        </p>
+      </footer>
+
+      <script src="script.js"></script>
+      <script>
+  // جلب بيانات الطالب من التخزين
+  const student = JSON.parse(localStorage.getItem("student"));
+
+  if (!student) {
+    // لو مفيش بيانات → يرجعه لصفحة تسجيل الدخول
+    window.location.href = "login.html";
+  } else {
+    // عرض البيانات
+    document.getElementById("studentName").innerText = `${student.name} `;
+    document.getElementById("studentCourse").innerText = `أنت مسجل في: ${student.course}`;
+
+    // عرض رسالة ترحيب مؤقتة
+    const message = document.createElement("div");
+    message.innerText = "✅ تم تسجيل الدخول بنجاح";
+    message.style.cssText = "background: #d4edda; color: #155724; padding: 10px; margin: 20px auto; width: fit-content; border-radius: 6px;";
+    document.body.insertBefore(message, document.body.children[1]); // قبل المحتوى الرئيسي
+
+    // إزالة الرسالة بعد 3 ثواني (اختياري)
+    setTimeout(() => message.remove(), 3000);
+  }
+
+  function logout() {
+    localStorage.removeItem("student");
+    window.location.href = "login.html";
+  }
+</script>
+
+</body>
+</html>

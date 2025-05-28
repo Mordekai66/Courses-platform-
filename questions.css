@@ -1,0 +1,51 @@
+.quez{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.quez h2{
+    font-size: 30px;
+    font-weight: 700;
+    color: #4a4a4a;
+    margin-bottom: 40px;
+}
+
+body{
+    background-color: #278783;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100vh;
+
+}
+
+
+.choice-container{
+    display: flex;
+    margin-bottom: 15px;
+    width: 100%;
+    font-size: 17px;
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.choice-container:hover{
+    cursor: pointer;
+    box-shadow: 0px 5px 10px 1px rgba(0,0,0, 0.08);
+    transition: .3s;
+    transform: scale(1.01);
+}
+
+.choice-prefix{
+    padding: 10px 20px;
+    background-color: #d7c0a3;
+    border-radius: 0.5rem 0 0 0.5rem;
+    color: black;
+    /* margin-right: 15px; */
+    font-weight: 400;
+}
+
+.choice-text{
+    padding: 10px 20px;
+}

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحة الامتحان</title>
+  <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Oi&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+    body {
+      font-family:cairo, sans-serif;
+      background-color: #f2f4f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      direction: rtl;
+    }
+
+    .exam-container {
+      width: 90%;
+      max-width: 700px;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      text-align: center;
+    }
+
+    .timer {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #2575fc;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .question h2 {
+      margin-bottom: 10px;
+      color: #2575fc;
+    }
+
+    .options {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    .options li {
+      background-color: #f0f4ff;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .options li.selected {
+      background-color: #d6e4ff;
+    }
+
+    .options li:hover {
+      background-color: #d6e4ff;
+    }
+
+    .nav-buttons {
+        font-family: Cairo;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .nav-buttons button {
+        font-family: Cairo;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #2575fc;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #1a5edc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="exam-container">
+    <div class="timer" id="timer">10:00</div>
+
+    <div class="question" id="question">
+      <h2>ما هي عاصمة فرنسا؟</h2>
+      <ul class="options">
+        <li>برلين</li>
+        <li>مدريد</li>
+        <li>باريس</li>
+        <li>روما</li>
+      </ul>
+    </div>
+
+    <div class="nav-buttons">
+      <button id="prev">السابق</button>
+      <button id="submit">تسليم الامتحان</button>
+      <button id="next">التالي</button>
+    </div>
+  </div>
+
+  <script>
+    let time = 10 * 60;
+    const timerElement = document.getElementById('timer');
+    let score = 0;
+
+    function updateTimer() {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      if (time > 0) {
+        time--;
+      } else {
+        clearInterval(timerInterval);
+        showResult();
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+
+    const questions = [
+      {
+        text: 'ما هي عاصمة فرنسا؟',
+        options: ['برلين', 'مدريد', 'باريس', 'روما'],
+        correct: 'باريس'
+      },
+      {
+        text: 'ما هو أكبر محيط في العالم؟',
+        options: ['الأطلسي', 'الهادئ', 'الهندي', 'المتجمد'],
+        correct: 'الهادئ'
+      },
+      {
+        text: 'كم عدد كواكب المجموعة الشمسية؟',
+        options: ['7', '8', '9', '10'],
+        correct: '8'
+      },
+      {
+        text: 'كم عدد كواكب اسا الشمسية؟',
+        options: ['7', '8', '9', '10'],
+        correct: '8'
+      }
+    ];
+
+    let currentQuestion = 0;
+    const questionContainer = document.getElementById('question');
+
+    function loadQuestion(index) {
+      const q = questions[index];
+      let html = `<h2>${q.text}</h2><ul class="options">`;
+      q.options.forEach(opt => {
+        html += `<li>${opt}</li>`;
+      });
+      html += '</ul>';
+      questionContainer.innerHTML = html;
+      document.querySelectorAll('.options li').forEach(li => {
+        li.addEventListener('click', () => {
+          document.querySelectorAll('.options li').forEach(el => el.classList.remove('selected'));
+          li.classList.add('selected');
+        });
+      });
+    }
+
+    function showResult() {
+      clearInterval(timerInterval);
+      let userScore = 0;
+      questions.forEach((q, i) => {
+        const selected = q.userAnswer;
+        if (selected === q.correct) {
+          userScore++;
+        }
+      });
+      questionContainer.innerHTML = `<h2>تم تسليم الامتحان!</h2><p>درجتك: ${userScore} من ${questions.length}</p>`;
+      document.querySelector('.nav-buttons').style.display = 'none';
+    }
+
+    document.getElementById('next').addEventListener('click', () => {
+      saveAnswer();
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion(currentQuestion);
+      }
+    });
+
+    document.getElementById('prev').addEventListener('click', () => {
+      saveAnswer();
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion(currentQuestion);
+      }
+    });
+
+    document.getElementById('submit').addEventListener('click', () => {
+      saveAnswer();
+      showResult();
+    });
+
+    function saveAnswer() {
+      const selected = document.querySelector('.options li.selected');
+      if (selected) {
+        questions[currentQuestion].userAnswer = selected.textContent;
+      }
+    }
+
+    loadQuestion(currentQuestion);
+  </script>
+
+</body>
+</html>
