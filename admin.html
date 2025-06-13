@@ -2,182 +2,3081 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>صفحة الأدمن - إدارة الطلاب</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة الكورسات والطلاب والامتحانات</title>
   <style>
+    /* أنماط للهواتف المحمولة */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .container {
+    width: 100%;
+    padding: 0 10px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    font-size: 20px;
+  }
+  
+  /* تعديل التبويبات */
+  .tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab {
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  
+  /* تعديل الجداول لعرضها بشكل عمودي */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  /* تعديل النماذج */
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  input, select, textarea, button {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  button {
+    padding: 8px 15px;
+  }
+  
+  /* تعديل قسم الامتحانات */
+  .question-container {
+    padding: 15px;
+  }
+  
+  .question-title {
+    font-size: 16px;
+  }
+  
+  .option-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .option-item input[type="text"] {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  
+  /* تعديل قائمة الامتحانات */
+  .exam-item {
+    padding: 10px;
+  }
+  
+  .exam-meta {
+    flex-direction: column;
+  }
+  
+  .exam-actions {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .exam-actions button {
+    width: 100%;
+  }
+  
+  /* تعديل فلتر الكورسات */
+  .filter-container {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .filter-group {
+    width: 100%;
+  }
+  
+  .filter-group select {
+    width: 100%;
+  }
+  
+  /* تعديل جدول الطلاب لعرضه بشكل عمودي */
+  #studentsTable thead {
+    display: none;
+  }
+  
+  #studentsTable tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  #studentsTable td {
+    width: 330px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  #studentsTable td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  
+  #studentsTable td:last-child {
+    border-bottom: none;
+  }
+  
+  /* تعديل جدول الكورسات */
+  #coursesTable thead {
+    display: none;
+  }
+  
+  #coursesTable tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  #coursesTable td {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  #coursesTable td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  
+  #coursesTable td:last-child {
+    border-bottom: none;
+  }
+  
+  /* تعديل معاينة اليوتيوب */
+  .youtube-thumbnail {
+    width: 120px;
+    height: 70px;
+  }
+}
+
+/* أنماط للهواتف صغيرة جدًا */
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+  
+  h1 {
+    font-size: 22px;
+  }
+  
+  h2 {
+    font-size: 18px;
+  }
+  
+  .tab {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  input, select, textarea, button {
+    padding: 7px;
+    font-size: 13px;
+  }
+  input, select, textarea{
+      width: 320px;
+  }
+  button {
+    padding: 7px 12px;
+  }
+}
     body {
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       direction: rtl;
-      background-color: #f2f2f2;
+      background-color: #f5f5f5;
+      margin: 0;
       padding: 20px;
+      line-height: 1.6;
     }
 
-    h2 {
-      color: #333;
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
     }
-
-    form, table {
-      background-color: #fff;
-      padding: 20px;
+    
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    
+    h1 {
+      text-align: center;
       margin-bottom: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
+      color: #3498db;
     }
-
-    input, select {
-      padding: 8px;
-      margin: 5px 0;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #3498db;
     }
-
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      border-radius: 5px;
+    
+    .tab {
+      padding: 12px 24px;
+      background-color: #ecf0f1;
       cursor: pointer;
-      margin-top: 10px;
+      margin-left: 5px;
+      border-radius: 5px 5px 0 0;
+      transition: all 0.3s;
+      font-weight: bold;
     }
-
+    
+    .tab.active {
+      background-color: #3498db;
+      color: white;
+    }
+    
+    .tab-content {
+      display: none;
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    form {
+      margin-bottom: 30px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #2980b9;
+    }
+    
+    button:disabled {
+      background-color: #95a5a6;
+      cursor: not-allowed;
+    }
+    
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 20px;
     }
-
+    
     th, td {
-      border: 1px solid #aaa;
-      padding: 10px;
+      padding: 12px;
       text-align: center;
+      border-bottom: 1px solid #ddd;
     }
-
+    
     th {
-      background-color: #007bff;
+      background-color: #3498db;
       color: white;
     }
+    
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    
+    .action-btn {
+      padding: 6px 12px;
+      margin: 0 3px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .edit-btn {
+      background-color: #2ecc71;
+    }
+    
+    .delete-btn {
+      background-color: #e74c3c;
+    }
+    
+    .youtube-thumbnail {
+      width: 160px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .youtube-thumbnail:hover {
+      transform: scale(1.05);
+    }
+    
+    .filter-container {
+      background-color: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .filter-group {
+      display: flex;
+      align-items: center;
+    }
+    
+    .filter-group label {
+      margin-left: 10px;
+      margin-bottom: 0;
+    }
+    
+    .alert {
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+    
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .alert-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .grade-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .grade-checkbox {
+      display: flex;
+      align-items: center;
+    }
+
+    /* أنماط قسم الامتحانات */
+    .question-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .question-title {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .remove-question {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .option-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .option-item input[type="text"] {
+      flex: 1;
+      margin-right: 10px;
+    }
+    
+    .option-item input[type="radio"] {
+      margin-left: 10px;
+    }
+    
+    .add-option {
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
+    .add-question {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+    }
+    
+    .exam-list {
+      margin-top: 30px;
+    }
+    .option-item input{
+      width: 60%;
+    }
+
+    .exam-item {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .exam-item:hover {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+  
+    
+    .exam-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #7f8c8d;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .exam-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .view-exam-btn {
+      background-color: #3498db;
+    }
+
+    .delete-exam-btn {
+      background-color: #e74c3c;
+    }
+    .search-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group select, 
+.filter-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.exam-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.exam-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.exam-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.exam-actions {
+    display: flex;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+    }
+    
+    .exam-list {
+        grid-template-columns: 1fr;
+    }
+}
   </style>
 </head>
 <body>
-
-  <h2>إضافة طالب جديد</h2>
-  <form id="addStudentForm">
-    <input type="text" name="student_code" placeholder="كود الطالب" required>
-    <input type="text" name="full_name" placeholder="الاسم بالكامل" required>
-    <select name="stage" required>
-      <option value="">-- اختر المرحلة --</option>
-      <option value="ابتدائي">ابتدائي</option>
-      <option value="اعدادي">اعدادي</option>
-      <option value="ثانوي">ثانوي</option>
-    </select>
-    <input type="number" name="age" placeholder="العمر" required>
-    <input type="email" name="email" placeholder="البريد الإلكتروني" required>
-    <input type="text" name="phone" placeholder="رقم الهاتف" required>
-    <input type="text" name="guardian_name" placeholder="اسم ولي الأمر" required>
-    <input type="text" name="guardian_phone" placeholder="رقم ولي الأمر" required>
-    <button type="submit">إضافة الطالب</button>
-  </form>
-
-  <h2>قائمة الطلاب</h2>
-  <table id="studentsTable">
-    <thead>
-      <tr>
-        <th>الاسم</th>
-        <th>المرحلة</th>
-        <th>العمر</th>
-        <th>الإيميل</th>
-        <th>الهاتف</th>
-        <th>ولي الأمر</th>
-        <th>رقم ولي الأمر</th>
-        <th>تعديل</th>
-        <th>حذف</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="container">
+    <h1> إدارة الكورسات والطلاب والامتحانات</h1>
+    
+    <div class="tabs">
+      <div class="tab active" onclick="openTab('students')">إدارة الطلاب</div>
+      <div class="tab" onclick="openTab('courses')">إدارة الكورسات</div>
+      <div class="tab" onclick="openTab('exams')">إدارة الامتحانات</div>
+    </div>
+    
+    <!-- قسم إدارة الطلاب -->
+    <div id="students" class="tab-content active">
+      <h2>إضافة طالب جديد</h2>
+      <form id="addStudentForm">
+        <div class="form-group">
+          <label for="student_code">كود الطالب:</label>
+          <input type="text" id="student_code" name="student_code" placeholder="أدخل كود الطالب" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="full_name">الاسم بالكامل:</label>
+          <input type="text" id="full_name" name="full_name" placeholder="أدخل الاسم بالكامل" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="stage">المرحلة الدراسية:</label>
+          <select id="stage" name="stage" required onchange="updateGradeOptions(this.value)">
+            <option value="">-- اختر المرحلة --</option>
+            <option value="ابتدائي">ابتدائي</option>
+            <option value="اعدادي">اعدادي</option>
+            <option value="ثانوي">ثانوي</option>
+          </select>
+        </div>
+        
+        <div class="form-group" id="gradeGroup" style="display:none;">
+          <label for="grade">الصف:</label>
+          <select id="grade" name="grade" required>
+            <!-- سيتم تعبئته ديناميكياً -->
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="age">العمر:</label>
+          <input type="number" id="age" name="age" placeholder="أدخل العمر" required min="6" max="30">
+        </div>
+        
+        <div class="form-group">
+          <label for="email">البريد الإلكتروني:</label>
+          <input type="email" id="email" name="email" placeholder="أدخل البريد الإلكتروني" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">رقم الهاتف:</label>
+          <input type="tel" id="phone" name="phone" placeholder="أدخل رقم الهاتف" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="guardian_name">اسم ولي الأمر:</label>
+          <input type="text" id="guardian_name" name="guardian_name" placeholder="أدخل اسم ولي الأمر" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="guardian_phone">رقم ولي الأمر:</label>
+          <input type="tel" id="guardian_phone" name="guardian_phone" placeholder="أدخل رقم ولي الأمر" required>
+        </div>
+        
+        <button type="submit" id="addStudentBtn">إضافة الطالب</button>
+      </form>
+      
+      <h2>قائمة الطلاب</h2>
+      <div id="studentsAlert" class="alert" style="display:none;"></div>
+      <table id="studentsTable">
+        <thead>
+          <tr>
+            <th>كود الطالب</th>
+            <th>الاسم</th>
+            <th>المرحلة</th>
+            <th>الصف</th>
+            <th>العمر</th>
+            <th>الإيميل</th>
+            <th>الهاتف</th>
+            <th>ولي الأمر</th>
+            <th>رقم ولي الأمر</th>
+            <th>تعديل</th>
+            <th>حذف</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    
+    <!-- قسم إدارة الكورسات -->
+    <div id="courses" class="tab-content">
+      <h2>إضافة كورس جديد</h2>
+      <form id="addCourseForm">
+        <div class="form-group">
+          <label for="course_name">اسم الكورس:</label>
+          <input type="text" id="course_name" name="course_name" placeholder="أدخل اسم الكورس" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="stage">المرحلة:</label>
+          <select id="course_stage" name="stage" required onchange="updateCourseGradeOptions(this.value)">
+            <option value="">-- اختر المرحلة --</option>
+            
+            <option value="ابتدائي">ابتدائي</option>
+            <option value="اعدادي">اعدادي</option>
+            <option value="ثانوي">ثانوي</option>
+          </select>
+        </div>
+        
+        <div class="form-group" id="courseGradeGroup" style="display:none;">
+          <label>الصفوف المحددة:</label>
+          <div id="gradeCheckboxes" class="grade-checkboxes">
+            <!-- سيتم تعبئته ديناميكياً -->
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="part_id">الشهر:</label>
+          <select id="part_id" name="part_id" required>
+            <option value="1">الشهر الأول</option>
+            <option value="2">الشهر الثاني</option>
+            <option value="3">الشهر الثالث</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="youtube_url">رابط اليوتيوب:</label>
+          <input type="url" id="youtube_url" name="youtube_url" placeholder="أدخل رابط اليوتيوب" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">وصف الكورس:</label>
+          <textarea id="description" name="description" placeholder="أدخل وصف الكورس"></textarea>
+        </div>
+        
+        <button type="submit" id="addCourseBtn">إضافة الكورس</button>
+      </form>
+      
+      <div class="filter-container">
+        <div class="filter-group">
+          <label>المرحلة:</label>
+          <select id="filterStage" onchange="updateFilterGradeOptions(this.value); filterCourses()">
+            <option value="all">جميع المراحل</option>
+           
+            <option value="ابتدائي">ابتدائي</option>
+            <option value="اعدادي">اعدادي</option>
+            <option value="ثانوي">ثانوي</option>
+          </select>
+        </div>
+        
+        <div class="filter-group" id="filterGradeGroup" style="display:none;">
+          <label>الصف:</label>
+          <select id="filterGrade" onchange="filterCourses()">
+            <option value="all">جميع الصفوف</option>
+            <!-- سيتم تعبئته ديناميكياً -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label>الشهر:</label>
+          <select id="filterPart" onchange="filterCourses()">
+            <option value="all">جميع الأشهر</option>
+            <option value="1">الشهر الأول</option>
+            <option value="2">الشهر الثاني</option>
+            <option value="3">الشهر الثالث</option>
+          </select>
+        </div>
+      </div>
+      
+      <h2>قائمة الكورسات</h2>
+      <div id="coursesAlert" class="alert" style="display:none;"></div>
+      <table id="coursesTable">
+        <thead>
+          <tr>
+            <th>اسم الكورس</th>
+            <th>المرحلة</th>
+            <th>الصف</th>
+            <th>الشهر</th>
+            <th>معاينة</th>
+            <th>الوصف</th>
+            <th>حذف</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    
+    <!-- قسم إدارة الامتحانات الجديد -->
+    <div id="exams" class="tab-content">
+      <h2>إنشاء امتحان جديد</h2>
+      <form id="examForm">
+        <div class="form-group">
+          <label for="exam_name">اسم الامتحان:</label>
+          <input type="text" id="exam_name" name="exam_name" placeholder="أدخل اسم الامتحان" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="exam_part">الشهر:</label>
+          <select id="exam_part" name="part_id" required>
+            <option value="1">الشهر الأول</option>
+            <option value="2">الشهر الثاني</option>
+            <option value="3">الشهر الثالث</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="exam_stage">المرحلة:</label>
+          <select id="exam_stage" name="stage" required>
+            
+            <option value="ابتدائي">ابتدائي</option>
+            <option value="اعدادي">اعدادي</option>
+            <option value="ثانوي">ثانوي</option>
+          </select>
+        </div>
+        
+        <div class="form-group" id="examGradeGroup" style="display:none;">
+          <label for="exam_grade">الصف:</label>
+          <select id="exam_grade" name="grade">
+            <!-- سيتم تعبئته ديناميكياً -->
+          </select>
+        </div>
+        <div class="form-group">
+  <div class="form-group">
+    <label for="duration_minutes">مدة الامتحان (دقائق):</label>
+    <input type="number" id="duration_minutes" name="duration_minutes" 
+           min="1" max="180" value="30" required>
+</div>
+        <div class="form-group">
+          <label for="question_count">عدد الأسئلة:</label>
+          <input type="number" id="question_count" name="question_count" min="1" max="50" value="10" required>
+        </div>
+        
+        <div id="questionsContainer">
+          <!-- سيتم إضافة الأسئلة هنا ديناميكياً -->
+        </div>
+        
+        <button type="button" id="generateQuestionsBtn" class="add-question">إنشاء نموذج الأسئلة</button>
+        <button type="submit" id="saveExamBtn" style="display:none;" class="btn">حفظ الامتحان</button>
+      </form>
+  
+   
+</div>
+<h2>قائمة الامتحانات</h2>
+<div id="examsList" class="exam-list">
+    <!-- سيتم عرض نتائج البحث هنا -->
+</div>
+      
+     
 
   <script>
     const API_BASE = "http://localhost:5000";
+    let allStudents = [];
+    let allCourses = [];
+    let allExams = [];
+    let studentTempData = {};
+    let courseTempData = {};
+
+    // ============== وظائف عامة ==============
+    function showAlert(elementId, message, isSuccess = true) {
+      const alertElement = document.getElementById(elementId);
+      alertElement.textContent = message;
+      alertElement.className = `alert ${isSuccess ? 'alert-success' : 'alert-error'}`;
+      alertElement.style.display = 'block';
+      
+      setTimeout(() => {
+        alertElement.style.display = 'none';
+      }, 5000);
+    }
+// فلترة الامتحانات
+
+
+// تحديث خيارات الصفوف لفلتر الامتحانات
+function updateExamFilterGradeOptions(stage) {
+  const gradeSelect = document.getElementById('examFilterGrade');
+  const gradeGroup = document.getElementById('examFilterGradeGroup');
+  
+  gradeSelect.innerHTML = '<option value="all">جميع الصفوف</option>';
+  gradeGroup.style.display = 'none';
+  
+  if (stage === 'all' || stage === 'عام') return;
+
+  gradeGroup.style.display = 'block';
+  
+  if (stage === 'ابتدائي') {
+    const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+    grades.forEach(grade => {
+      gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+    });
+  } 
+  else if (stage === 'اعدادي') {
+    const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+    grades.forEach(grade => {
+      gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+    });
+  } 
+  else if (stage === 'ثانوي') {
+    const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+    grades.forEach(grade => {
+      gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+    });
+  }
+}
+    function setLoading(button, isLoading) {
+      if (isLoading) {
+        button.innerHTML = `<span class="loading"></span> ${button.textContent}`;
+        button.disabled = true;
+      } else {
+        button.querySelector('.loading')?.remove();
+        button.disabled = false;
+      }
+    }
+
+// تعديل دالة renderExamsList لتعمل مع المصفوفة المفلترة
+function renderExamsList(exams = allExams) {
+    const examsList = document.getElementById("examsList");
+    examsList.innerHTML = "";
+
+    if (!exams || exams.length === 0) {
+        examsList.innerHTML = '<div class="alert">لا توجد امتحانات مسجلة</div>';
+        return;
+    }
+
+    exams.forEach(exam => {
+        const examItem = document.createElement("div");
+        examItem.className = "exam-item";
+        examItem.innerHTML = `
+            <h3>${exam.exam_name}</h3>
+            <p>${exam.questions?.length || 0} سؤال - ${getPartName(exam.part_id)}</p>
+            <div class="exam-meta">
+                <span>المرحلة: ${exam.stage === 'عام' ? 'عامة' : exam.stage}</span>
+                ${exam.grade ? `<span>الصف: ${exam.grade}</span>` : ''}
+            </div>
+            <div class="exam-actions">
+                <button class="action-btn delete-exam-btn" onclick="deleteExam(${exam.id}, this)">حذف الامتحان</button>
+            </div>
+        `;
+        examsList.appendChild(examItem);
+    });
+}
+    // ============== وظائف التبويب ==============
+    function openTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      document.getElementById(tabName).classList.add('active');
+      document.querySelector(`.tab[onclick="openTab('${tabName}')"]`).classList.add('active');
+      
+      if (tabName === 'students') loadStudents();
+      if (tabName === 'courses') loadCourses();
+      if (tabName === 'exams') loadExams();
+    }
+
+    // ============== وظائف الطلاب ==============
+    function updateGradeOptions(stage) {
+      const gradeSelect = document.getElementById('grade');
+      const gradeGroup = document.getElementById('gradeGroup');
+      
+      gradeSelect.innerHTML = '';
+      gradeGroup.style.display = 'none';
+      
+      if (!stage) return;
+
+      gradeGroup.style.display = 'block';
+      
+      if (stage === 'ابتدائي') {
+        const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'اعدادي') {
+        const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'ثانوي') {
+        const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      }
+    }
+
+    function updateCourseGradeOptions(stage) {
+      const gradeGroup = document.getElementById('courseGradeGroup');
+      const gradeCheckboxes = document.getElementById('gradeCheckboxes');
+      
+      gradeCheckboxes.innerHTML = '';
+      gradeGroup.style.display = 'none';
+      
+      if (!stage || stage === 'عام') return;
+
+      gradeGroup.style.display = 'block';
+      
+      const grades = {
+        'ابتدائي': ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'],
+        'اعدادي': ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'],
+        'ثانوي': ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي']
+      };
+      
+      grades[stage].forEach(grade => {
+        const checkboxId = `grade_${grade.replace(/\s+/g, '_')}`;
+        gradeCheckboxes.innerHTML += `
+          <div class="grade-checkbox">
+            <input type="checkbox" id="${checkboxId}" value="${grade}">
+            <label for="${checkboxId}">${grade}</label>
+          </div>
+        `;
+      });
+    }
+
+    function updateFilterGradeOptions(stage) {
+      const gradeSelect = document.getElementById('filterGrade');
+      const gradeGroup = document.getElementById('filterGradeGroup');
+      
+      gradeSelect.innerHTML = '<option value="all">جميع الصفوف</option>';
+      gradeGroup.style.display = 'none';
+      
+      if (stage === 'all' || stage === 'عام') return;
+
+      gradeGroup.style.display = 'block';
+      
+      if (stage === 'ابتدائي') {
+        const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'اعدادي') {
+        const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'ثانوي') {
+        const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      }
+    }
+
+    function updateExamGradeOptions(stage) {
+      const gradeSelect = document.getElementById('exam_grade');
+      const gradeGroup = document.getElementById('examGradeGroup');
+      
+      gradeSelect.innerHTML = '';
+      gradeGroup.style.display = 'none';
+      
+      if (!stage || stage === 'عام') return;
+
+      gradeGroup.style.display = 'block';
+      
+      if (stage === 'ابتدائي') {
+        const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'اعدادي') {
+        const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'ثانوي') {
+        const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      }
+    }
 
     async function loadStudents() {
-      const res = await fetch(`${API_BASE}/students`);
-      const students = await res.json();
+      try {
+        const response = await fetch(`${API_BASE}/students`);
+        if (!response.ok) throw new Error('فشل في جلب بيانات الطلاب');
+        
+        allStudents = await response.json();
+        renderStudentsTable();
+      } catch (error) {
+        console.error('Error loading students:', error);
+        showAlert('studentsAlert', 'حدث خطأ أثناء تحميل بيانات الطلاب: ' + error.message, false);
+      }
+    }
+
+    function renderStudentsTable() {
       const tbody = document.querySelector("#studentsTable tbody");
       tbody.innerHTML = "";
 
-      students.forEach(student => {
+      if (allStudents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11">لا يوجد طلاب مسجلين</td></tr>`;
+        return;
+      }
+
+      allStudents.forEach(student => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td><input value="${student.full_name}" onchange="updateField(${student.id}, 'full_name', this.value)"></td>
+          <td>${student.student_code}</td>
+          <td><input type="text" value="${student.full_name || ''}" onchange="updateStudentField(${student.id}, 'full_name', this.value)"></td>
           <td>
-            <select onchange="updateField(${student.id}, 'stage', this.value)">
-              <option ${student.stage === 'ابتدائي' ? 'selected' : ''}>ابتدائي</option>
-              <option ${student.stage === 'اعدادي' ? 'selected' : ''}>اعدادي</option>
-              <option ${student.stage === 'ثانوي' ? 'selected' : ''}>ثانوي</option>
+            <select onchange="updateStudentField(${student.id}, 'stage', this.value); updateStudentGradeOptions(${student.id}, this.value)">
+              <option value="ابتدائي" ${student.stage === 'ابتدائي' ? 'selected' : ''}>ابتدائي</option>
+              <option value="اعدادي" ${student.stage === 'اعدادي' ? 'selected' : ''}>اعدادي</option>
+              <option value="ثانوي" ${student.stage === 'ثانوي' ? 'selected' : ''}>ثانوي</option>
             </select>
           </td>
-          <td><input type="number" value="${student.age}" onchange="updateField(${student.id}, 'age', this.value)"></td>
-          <td><input value="${student.email}" onchange="updateField(${student.id}, 'email', this.value)"></td>
-          <td><input value="${student.phone}" onchange="updateField(${student.id}, 'phone', this.value)"></td>
-          <td><input value="${student.guardian_name}" onchange="updateField(${student.id}, 'guardian_name', this.value)"></td>
-          <td><input value="${student.guardian_phone}" onchange="updateField(${student.id}, 'guardian_phone', this.value)"></td>
-          <td><button onclick="saveRow(${student.id}, this)">💾</button></td>
-          <td><button onclick="deleteStudent(${student.id}, this)">🗑️</button></td>
+          <td id="gradeCell${student.id}">
+            <select onchange="updateStudentField(${student.id}, 'grade', this.value)">
+              ${getGradeOptions(student.stage, student.grade)}
+            </select>
+          </td>
+          <td><input type="number" value="${student.age || ''}" onchange="updateStudentField(${student.id}, 'age', this.value)" min="6" max="30"></td>
+          <td><input type="email" value="${student.email || ''}" onchange="updateStudentField(${student.id}, 'email', this.value)"></td>
+          <td><input type="tel" value="${student.phone || ''}" onchange="updateStudentField(${student.id}, 'phone', this.value)"></td>
+          <td><input type="text" value="${student.guardian_name || ''}" onchange="updateStudentField(${student.id}, 'guardian_name', this.value)"></td>
+          <td><input type="tel" value="${student.guardian_phone || ''}" onchange="updateStudentField(${student.id}, 'guardian_phone', this.value)"></td>
+          <td><button class="action-btn edit-btn" onclick="saveStudentChanges(${student.id}, this)">حفظ</button></td>
+          <td><button class="action-btn delete-btn" onclick="deleteStudent(${student.id}, this)">حذف</button></td>
         `;
         tbody.appendChild(row);
       });
     }
 
-    const tempData = {};
-    function updateField(id, key, value) {
-      if (!tempData[id]) tempData[id] = {};
-      tempData[id][key] = value;
+    function getGradeOptions(stage, currentGrade) {
+      let options = '';
+      
+      if (stage === 'ابتدائي') {
+        const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+        grades.forEach(grade => {
+          options += `<option value="${grade}" ${grade === currentGrade ? 'selected' : ''}>${grade}</option>`;
+        });
+      } 
+      else if (stage === 'اعدادي') {
+        const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+        grades.forEach(grade => {
+          options += `<option value="${grade}" ${grade === currentGrade ? 'selected' : ''}>${grade}</option>`;
+        });
+      } 
+      else if (stage === 'ثانوي') {
+        const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+        grades.forEach(grade => {
+          options += `<option value="${grade}" ${grade === currentGrade ? 'selected' : ''}>${grade}</option>`;
+        });
+      }
+      
+      return options;
     }
 
-    async function saveRow(id, btn) {
-      if (!tempData[id]) return alert("لا يوجد تعديلات");
-      btn.innerText = "⏳";
-      const res = await fetch(`${API_BASE}/edit_student/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tempData[id])
-      });
-      btn.innerText = "💾";
-      const data = await res.json();
-      alert(data.message || data.error);
-      loadStudents();
+    function updateStudentGradeOptions(studentId, stage) {
+      const gradeCell = document.getElementById(`gradeCell${studentId}`);
+      const currentGrade = studentTempData[studentId]?.grade || 
+                         allStudents.find(s => s.id === studentId)?.grade;
+      
+      gradeCell.innerHTML = `
+        <select onchange="updateStudentField(${studentId}, 'grade', this.value)">
+          ${getGradeOptions(stage, currentGrade)}
+        </select>
+      `;
+    }
+
+    function updateStudentField(id, field, value) {
+      if (!studentTempData[id]) {
+        const student = allStudents.find(s => s.id === id);
+        studentTempData[id] = { ...student };
+      }
+      studentTempData[id][field] = value;
+      
+      if (field === 'stage') {
+        updateStudentGradeOptions(id, value);
+      }
+    }
+
+    async function saveStudentChanges(id, btn) {
+      const requiredFields = ['full_name', 'stage', 'grade', 'age', 'email', 'phone', 'guardian_name', 'guardian_phone'];
+      const missingFields = requiredFields.filter(field => !studentTempData[id]?.[field]);
+
+      if (missingFields.length > 0) {
+        showAlert('studentsAlert', ` يجب تعديل الحقول المطلوبة: `, false);
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const response = await fetch(`${API_BASE}/edit_student/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(studentTempData[id])
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في تحديث بيانات الطالب");
+        }
+
+        const data = await response.json();
+        showAlert('studentsAlert', data.message || "تم تحديث بيانات الطالب بنجاح", true);
+        delete studentTempData[id];
+        loadStudents();
+      } catch (error) {
+        console.error('Error saving student:', error);
+        showAlert('studentsAlert', 'حدث خطأ أثناء حفظ التعديلات: ' + error.message, false);
+      } finally {
+        setLoading(btn, false);
+      }
     }
 
     async function deleteStudent(id, btn) {
-      if (!confirm("هل أنت متأكد أنك تريد حذف هذا الطالب؟")) return;
-      btn.innerText = "⏳";
-      const res = await fetch(`${API_BASE}/delete_student/${id}`, {
-        method: "DELETE"
-      });
-      const data = await res.json();
-      alert(data.message || data.error);
-      loadStudents();
+      if (!confirm("هل أنت متأكد من حذف هذا الطالب؟ لا يمكن التراجع عن هذه العملية.")) {
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const response = await fetch(`${API_BASE}/delete_student/${id}`, {
+          method: "DELETE"
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في حذف الطالب");
+        }
+
+        const data = await response.json();
+        showAlert('studentsAlert', data.message || "تم حذف الطالب بنجاح", true);
+        loadStudents();
+      } catch (error) {
+        console.error('Error deleting student:', error);
+        showAlert('studentsAlert', 'حدث خطأ أثناء حذف الطالب: ' + error.message, false);
+      } finally {
+        setLoading(btn, false);
+      }
     }
 
-    document.getElementById("addStudentForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const jsonData = {};
-      formData.forEach((val, key) => jsonData[key] = val);
+    // ============== وظائف الكورسات ==============
+   async function loadCourses() {
+  try {
+    const response = await fetch(`${API_BASE}/courses`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'فشل في جلب الكورسات');
+    }
+    
+    const data = await response.json();
+    allCourses = Array.isArray(data) ? data : []; // تأكد أن البيانات هي مصفوفة
+    filterCourses();
+  } catch (error) {
+    console.error('Error loading courses:', error);
+    showAlert('coursesAlert', 'حدث خطأ أثناء تحميل الكورسات: ' + error.message, false);
+  }
+}
 
-      const res = await fetch(`${API_BASE}/add_student`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(jsonData)
+    function filterCourses() {
+  const stageFilter = document.getElementById('filterStage').value;
+  const gradeFilter = document.getElementById('filterGrade')?.value || 'all';
+  const partFilter = document.getElementById('filterPart').value;
+  
+  const filteredCourses = allCourses.filter(course => {
+    // تطابق المرحلة (عام أو المرحلة المحددة)
+    const stageMatch = stageFilter === 'all' || 
+                      course.stage === stageFilter ;
+    
+    // تطابق الصف (إذا كانت المرحلة ليست "عام")
+    const gradeMatch = stageFilter === 'all' || 
+                      gradeFilter === 'all' || 
+                      course.grade === gradeFilter || 
+                      course.grade === null;
+    
+    // تطابق الشهر
+    const partMatch = partFilter === 'all' || 
+                     course.part_id.toString() === partFilter;
+    
+    return stageMatch && gradeMatch && partMatch;
+  });
+
+  renderCoursesTable(filteredCourses);
+}
+    function renderCoursesTable(courses) {
+  const tbody = document.querySelector("#coursesTable tbody");
+  tbody.innerHTML = "";
+
+  if (!courses || courses.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7">لا توجد كورسات متاحة</td></tr>';
+    return;
+  }
+
+  courses.forEach(course => {
+    // استخراج معرّف فيديو اليوتيوب بشكل صحيح
+    const videoId = extractYouTubeId(course.youtube_url);
+    const thumbnailUrl = videoId ? 
+      `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : 
+      '';
+    
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${course.course_name || 'بدون اسم'}</td>
+      <td>${course.stage === 'عام' ? 'عام' : course.stage || 'غير محدد'}</td>
+      <td>${course.grade || 'جميع الصفوف'}</td>
+      <td>${getPartName(course.part_id)}</td>
+      <td>
+        ${thumbnailUrl ? 
+          `<img src="${thumbnailUrl}" class="youtube-thumbnail" 
+               onclick="window.open('${course.youtube_url}', '_blank')" 
+               title="اضغط للمشاهدة">` : 
+          'رابط غير صحيح'}
+      </td>
+      <td>${course.description || 'لا يوجد وصف'}</td>
+      <td>
+        <button class="action-btn delete-btn" 
+                onclick="deleteCourse(${course.id}, this)">
+          حذف
+        </button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+   function extractYouTubeId(url) {
+  if (!url) return null;
+  
+  // تحسين استخراج معرّف الفيديو ليتعامل مع جميع أشكال روابط يوتيوب
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+    function getPartName(partId) {
+      switch(partId) {
+        case 1: return 'الشهر الأول';
+        case 2: return 'الشهر الثاني';
+        case 3: return 'الشهر الثالث';
+        default: return 'غير محدد';
+      }
+    }
+
+    async function deleteCourse(id, btn) {
+      if (!confirm("هل أنت متأكد من حذف هذا الكورس؟ لا يمكن التراجع عن هذه العملية.")) {
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const response = await fetch(`${API_BASE}/delete_course/${id}`, {
+          method: "DELETE"
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في حذف الكورس");
+        }
+
+        const data = await response.json();
+        showAlert('coursesAlert', data.message || "تم حذف الكورس بنجاح", true);
+        loadCourses();
+      } catch (error) {
+        console.error('Error deleting course:', error);
+        showAlert('coursesAlert', 'حدث خطأ أثناء حذف الكورس: ' + error.message, false);
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ============== وظائف الامتحانات ==============
+    async function loadExams() {
+      try {
+        const response = await fetch(`${API_BASE}/exams`);
+        if (!response.ok) throw new Error('فشل في جلب بيانات الامتحانات');
+        
+        allExams = await response.json();
+        renderExamsList();
+      } catch (error) {
+        console.error('Error loading exams:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء تحميل الامتحانات: ' + error.message, false);
+      }
+    }
+
+    function renderExamsList() {
+      const examsList = document.getElementById("examsList");
+      examsList.innerHTML = "";
+
+      if (allExams.length === 0) {
+        examsList.innerHTML = '<div class="alert">لا توجد امتحانات مسجلة</div>';
+        return;
+      }
+
+      allExams.forEach(exam => {
+        const examItem = document.createElement("div");
+        examItem.className = "exam-item";
+        examItem.innerHTML = `
+          <h3>${exam.exam_name}</h3>
+          <p>${exam.questions.length} سؤال - ${getPartName(exam.part_id)}</p>
+          <div class="exam-meta">
+            <span>المرحلة: ${exam.stage === 'عام' ? 'عامة' : exam.stage}</span>
+            <span>الصف: ${exam.grade || 'جميع الصفوف'}</span>
+          </div>
+          <div class="exam-actions">
+            <button class="action-btn delete-exam-btn" onclick="deleteExam(${exam.id}, this)">حذف الامتحان</button>
+          </div>
+        `;
+        examsList.appendChild(examItem);
       });
+    }
 
-      const data = await res.json();
-      alert(data.message || data.error);
-      e.target.reset();
-      loadStudents();
+    function generateQuestionForm() {
+      const questionCount = parseInt(document.getElementById("question_count").value);
+      const questionsContainer = document.getElementById("questionsContainer");
+      questionsContainer.innerHTML = "";
+
+      for (let i = 1; i <= questionCount; i++) {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question-container";
+        questionDiv.innerHTML = `
+          <div class="question-header">
+            <div class="question-title">السؤال ${i}</div>
+            <button type="button" class="remove-question" onclick="this.parentElement.parentElement.remove()">حذف السؤال</button>
+          </div>
+          <div class="form-group">
+            <label for="question_${i}">نص السؤال:</label>
+            <input type="text" id="question_${i}" name="questions[${i}][text]" required>
+          </div>
+          <div class="form-group">
+            <label>الاختيارات:</label>
+            <div id="options_${i}">
+              <div class="option-item">
+                <input type="text" name="questions[${i}][options][0]" placeholder="الاختيار الأول" required>
+                <input type="radio" name="questions[${i}][correct]" value="0" required> صح
+              </div>
+              <div class="option-item">
+                <input type="text" name="questions[${i}][options][1]" placeholder="الاختيار الثاني" required>
+                <input type="radio" name="questions[${i}][correct]" value="1"> صح
+              </div>
+            </div>
+            <button type="button" class="add-option" onclick="addOption(${i})">إضافة اختيار</button>
+          </div>
+        `;
+        questionsContainer.appendChild(questionDiv);
+      }
+
+      document.getElementById("saveExamBtn").style.display = "block";
+    }
+
+    function addOption(questionId) {
+      const optionsContainer = document.getElementById(`options_${questionId}`);
+      const optionCount = optionsContainer.children.length;
+      
+      if (optionCount >= 5) {
+        alert("الحد الأقصى للاختيارات هو 5");
+        return;
+      }
+
+      const optionDiv = document.createElement("div");
+      optionDiv.className = "option-item";
+      optionDiv.innerHTML = `
+        <input type="text" name="questions[${questionId}][options][${optionCount}]" placeholder="الاختيار ${optionCount + 1}" required>
+        <input type="radio" name="questions[${questionId}][correct]" value="${optionCount}"> صح
+      `;
+      optionsContainer.appendChild(optionDiv);
+    }
+
+
+
+function showExamPreview(exam) {
+    const previewHtml = `
+        <div class="exam-preview">
+            <h2>${exam.exam_name}</h2>
+            <p>${exam.part_name} - ${exam.stage === 'عام' ? 'عام' : exam.stage} ${exam.grade ? '- ' + exam.grade : ''}</p>
+            <hr>
+            ${exam.questions.map((q, i) => `
+                <div class="question-preview">
+                    <h4>السؤال ${i + 1}: ${q.question_text}</h4>
+                    <ul>
+                        ${q.options.map((opt, j) => `
+                            <li style="${j == q.correct_answer ? 'color:green;font-weight:bold' : ''}">${opt}</li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('')}
+            <button onclick="document.getElementById('examPreviewModal').remove()" style="margin-top:20px;">إغلاق</button>
+        </div>
+    `;
+
+    const modal = document.createElement("div");
+    modal.id = "examPreviewModal";
+    modal.style.position = "fixed";
+    modal.style.top = "0";
+    modal.style.left = "0";
+    modal.style.width = "100%";
+    modal.style.height = "100%";
+    modal.style.backgroundColor = "rgba(0,0,0,0.8)";
+    modal.style.zIndex = "1000";
+    modal.style.display = "flex";
+    modal.style.justifyContent = "center";
+    modal.style.alignItems = "center";
+    
+    const content = document.createElement("div");
+    content.style.backgroundColor = "white";
+    content.style.padding = "30px";
+    content.style.borderRadius = "10px";
+    content.style.maxWidth = "800px";
+    content.style.maxHeight = "80vh";
+    content.style.overflowY = "auto";
+    content.innerHTML = previewHtml;
+    
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+}
+    function showExamPreview(exam) {
+      const previewHtml = `
+        <div class="exam-preview">
+          <h2>${exam.exam_name}</h2>
+          <p>${getPartName(exam.part_id)} - ${exam.stage === 'عام' ? 'عام' : exam.stage} ${exam.grade ? '- ' + exam.grade : ''}</p>
+          <hr>
+          ${exam.questions.map((q, i) => `
+            <div class="question-preview">
+              <h4>السؤال ${i + 1}: ${q.text}</h4>
+              <ul>
+                ${q.options.map((opt, j) => `
+                  <li style="${j == q.correct ? 'color:green;font-weight:bold' : ''}">${opt}</li>
+                `).join('')}
+              </ul>
+            </div>
+          `).join('')}
+          <button onclick="document.getElementById('examPreviewModal').remove()" style="margin-top:20px;">إغلاق</button>
+        </div>
+      `;
+
+      const modal = document.createElement("div");
+      modal.id = "examPreviewModal";
+      modal.style.position = "fixed";
+      modal.style.top = "0";
+      modal.style.left = "0";
+      modal.style.width = "100%";
+      modal.style.height = "100%";
+      modal.style.backgroundColor = "rgba(0,0,0,0.8)";
+      modal.style.zIndex = "1000";
+      modal.style.display = "flex";
+      modal.style.justifyContent = "center";
+      modal.style.alignItems = "center";
+      modal.style.color = "#333";
+      
+      const content = document.createElement("div");
+      content.style.backgroundColor = "white";
+      content.style.padding = "30px";
+      content.style.borderRadius = "10px";
+      content.style.maxWidth = "800px";
+      content.style.maxHeight = "80vh";
+      content.style.overflowY = "auto";
+      content.innerHTML = previewHtml;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+    }
+
+    async function deleteExam(examId, btn) {
+      if (!confirm("هل أنت متأكد من حذف هذا الامتحان؟ لا يمكن التراجع عن هذه العملية.")) {
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const response = await fetch(`${API_BASE}/delete_exam/${examId}`, {
+          method: "DELETE"
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في حذف الامتحان");
+        }
+
+        const data = await response.json();
+        showAlert('examsAlert', data.message || "تم حذف الامتحان بنجاح", true);
+        loadExams();
+      } catch (error) {
+        console.error('Error deleting exam:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء حذف الامتحان: ' + error.message, false);
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ============== أحداث النماذج ==============
+      document.getElementById("addStudentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = document.getElementById('addStudentBtn');
+      
+      setLoading(submitBtn, true);
+
+      try {
+        const jsonData = {
+          student_code: form.student_code.value,
+          full_name: form.full_name.value,
+          stage: form.stage.value,
+          grade: form.grade.value,
+          age: form.age.value,
+          email: form.email.value,
+          phone: form.phone.value,
+          guardian_name: form.guardian_name.value,
+          guardian_phone: form.guardian_phone.value
+        };
+
+        const response = await fetch(`${API_BASE}/add_student`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonData)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في إضافة الطالب");
+        }
+
+        const data = await response.json();
+        showAlert('studentsAlert', data.message || "تمت إضافة الطالب بنجاح", true);
+        form.reset();
+        document.getElementById('gradeGroup').style.display = 'none';
+        loadStudents();
+      } catch (error) {
+        console.error('Error adding student:', error);
+        showAlert('studentsAlert', 'خطأ  :  كود الطالب مستخدم من قبل' , false);
+      } finally {
+        setLoading(submitBtn, false);
+      }
     });
 
-    loadStudents();
+    document.getElementById("addCourseForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const submitBtn = document.getElementById('addCourseBtn');
+  
+  setLoading(submitBtn, true);
+
+  try {
+    const stage = form.stage.value;
+    let grades = [];
+    
+    if (stage !== 'عام') {
+      const checkboxes = document.querySelectorAll('#gradeCheckboxes input[type="checkbox"]:checked');
+      grades = Array.from(checkboxes).map(cb => cb.value);
+      
+      if (grades.length === 0) {
+        throw new Error('يجب تحديد صف واحد على الأقل');
+      }
+    }
+
+    const jsonData = {
+      course_name: form.course_name.value,
+      youtube_url: form.youtube_url.value,
+      description: form.description.value,
+      stage: stage,
+      part_id: parseInt(form.part_id.value),
+      grades: grades
+    };
+
+    const response = await fetch(`${API_BASE}/add_course`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(jsonData)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "فشل في إضافة الكورس");
+    }
+
+    const data = await response.json();
+    showAlert('coursesAlert', data.message || "تمت إضافة الكورس بنجاح", true);
+    form.reset();
+    document.getElementById('courseGradeGroup').style.display = 'none';
+    loadCourses();
+  } catch (error) {
+    console.error('Error adding course:', error);
+    showAlert('coursesAlert', 'حدث خطأ أثناء إضافة الكورس: ' + error.message, false);
+  } finally {
+    setLoading(submitBtn, false);
+  }
+});
+
+   document.getElementById("examForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const submitBtn = document.getElementById('saveExamBtn');
+    
+    setLoading(submitBtn, true);
+
+    try {
+        // جمع بيانات الأسئلة
+        const questions = [];
+        const questionElements = document.querySelectorAll('.question-container');
+        
+        questionElements.forEach((qElement, index) => {
+            const questionText = qElement.querySelector('input[name^="questions["][type="text"]').value;
+            const options = Array.from(qElement.querySelectorAll('input[name^="questions["][placeholder^="الاختيار"]')).map(opt => opt.value);
+            const correct = qElement.querySelector('input[name^="questions["][type="radio"]:checked')?.value;
+            
+            if (!questionText || options.some(opt => !opt) || correct === undefined) {
+                throw new Error(`الرجاء إكمال جميع بيانات السؤال ${index + 1}`);
+            }
+            
+            questions.push({
+                text: questionText,
+                options: options,
+                correct: parseInt(correct)
+            });
+        });
+
+  
+
+       const examData = {
+    exam_name: form.exam_name.value,
+    part_id: form.part_id.value,
+    stage: form.stage.value,
+    questions: questions
+};
+
+// إضافة grade فقط إذا كانت المرحلة ليست "عام"
+if (form.stage.value !== 'عام') {
+    examData.grade = form.grade.value;
+}
+
+// إضافة duration_minutes إذا كانت موجودة في النموذج
+if (form.duration_minutes && form.duration_minutes.value) {
+    examData.duration_minutes = parseInt(form.duration_minutes.value);
+}
+
+async function addExam() {
+    const form = document.getElementById('examForm');
+    const questions = []; // تأكد من تعبئة هذا المصفوفة بشكل صحيح
+    
+    const examData = {
+        exam_name: form.exam_name.value,
+        part_id: form.part_id.value,
+        stage: form.stage.value,
+        questions: questions
+    };
+
+    if (form.stage.value !== 'عام') {
+        examData.grade = form.grade.value;
+    }
+
+    if (form.duration_minutes && form.duration_minutes.value) {
+        examData.duration_minutes = parseInt(form.duration_minutes.value);
+    }
+
+    try {
+        const response = await fetch('/add_exam', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(examData)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert('تمت إضافة الامتحان بنجاح!');
+            console.log('Exam ID:', result.exam_id);
+        } else {
+            alert(`خطأ: ${result.error}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء إرسال البيانات');
+    }
+}
+        // التحقق من وجود امتحان بنفس المواصفات
+        const checkResponse = await fetch(`${API_BASE}/check_exam_exists`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                part_id: examData.part_id,
+                stage: examData.stage,
+                grade: examData.grade
+            })
+        });
+
+        const checkData = await checkResponse.json();
+        
+        if (checkData.exists) {
+            if (!confirm(`يوجد بالفعل امتحان ${getPartName(examData.part_id)} ل${examData.grade || 'جميع الصفوف'}. هل تريد استبداله؟`)) {
+                return;
+            }
+            
+            // حذف الامتحان القديم إذا وافق المستخدم
+            const deleteResponse = await fetch(`${API_BASE}/delete_exam/${checkData.exam_id}`, {
+                method: "DELETE"
+            });
+            
+            if (!deleteResponse.ok) {
+                throw new Error('فشل في حذف الامتحان القديم');
+            }
+        }
+
+        // إضافة الامتحان الجديد
+        const response = await fetch(`${API_BASE}/add_exam`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(examData)
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'فشل في حفظ الامتحان');
+        }
+
+        showAlert('examsAlert', data.message || "تم حفظ الامتحان بنجاح", true);
+        form.reset();
+        document.getElementById('questionsContainer').innerHTML = "";
+        document.getElementById('saveExamBtn').style.display = "none";
+        loadExams();
+    } catch (error) {
+        console.error('Error saving exam:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء حفظ الامتحان: ' + error.message, false);
+    } finally {
+        setLoading(submitBtn, false);
+    }
+});
+
+    document.getElementById("generateQuestionsBtn").addEventListener("click", generateQuestionForm);
+    document.getElementById("exam_stage").addEventListener("change", function() {
+      updateExamGradeOptions(this.value);
+    });
+
+    // ============== تهيئة الصفحة ==============
+    document.addEventListener('DOMContentLoaded', () => {
+      // تهيئة قاعدة البيانات أولاً
+      fetch(`${API_BASE}/init_db`, { method: 'POST' })
+        .then(response => {
+          if (!response.ok) throw new Error('فشل في تهيئة قاعدة البيانات');
+          return response.json();
+        })
+        .then(data => {
+          console.log(data.message);
+          // تحميل البيانات بعد التهيئة
+          loadStudents();
+          loadCourses();
+          loadExams();
+        })
+        .catch(error => {
+          console.error('Error initializing database:', error);
+          // مع ذلك حاول تحميل البيانات
+          loadStudents();
+          loadCourses();
+          loadExams();
+        });
+    });
+    // ====== دوال الامتحانات ======
+async function loadExams() {
+    try {
+        const response = await fetch(`${API_BASE}/exams`);
+        if (!response.ok) throw new Error('فشل في جلب الامتحانات');
+        
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error || 'خطأ في بيانات الامتحانات');
+        
+        allExams = data.exams || [];
+        renderExamsList();
+    } catch (error) {
+        console.error('Error loading exams:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء جلب الامتحانات: ' + error.message, false);
+    }
+}
+
+function renderExamsList() {
+    const examsList = document.getElementById("examsList");
+    examsList.innerHTML = "";
+
+    if (allExams.length === 0) {
+        examsList.innerHTML = '<div class="alert">لا توجد امتحانات مسجلة</div>';
+        return;
+    }
+
+    allExams.forEach(exam => {
+        const examItem = document.createElement("div");
+        examItem.className = "exam-item";
+        examItem.innerHTML = `
+            <h3>${exam.exam_name}</h3>
+            <p>${exam.questions?.length || 0} سؤال - ${exam.part_name || getPartName(exam.part_id)}</p>
+            <div class="exam-meta">
+                <span>المرحلة: ${exam.stage === 'عام' ? 'عامة' : exam.stage}</span>
+                ${exam.grade ? `<span>الصف: ${exam.grade}</span>` : ''}
+            </div>
+            <div class="exam-actions">
+                <button class="action-btn delete-exam-btn" onclick="deleteExam(${exam.id}, this)">حذف الامتحان</button>
+            </div>
+        `;
+        examsList.appendChild(examItem);
+    });
+}
+
+async function saveExam(examData) {
+  try {
+    const response = await fetch('http://localhost:5000/add_exam', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(examData),
+      credentials: 'include' // إذا كنت تستخدم الكوكيز أو الجلسات
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'حدث خطأ أثناء حفظ الامتحان');
+    }
+
+    const result = await response.json();
+    console.log('تم الحفظ بنجاح:', result);
+    return result;
+  } catch (error) {
+    console.error('فشل في الحفظ:', error.message);
+    // عرض رسالة الخطأ للمستخدم
+    
+    throw error;
+  }
+}
+
+// مثال لاستخدام الدالة
+
+
+saveExam(examData).then(() => {
+  console.log("تمت العملية بنجاح");
+}).catch(() => {
+  console.log("فشلت العملية");
+});
+
+async function deleteExam(examId, btn) {
+    if (!confirm("هل أنت متأكد من حذف هذا الامتحان؟ لا يمكن التراجع عن هذه العملية.")) {
+        return;
+    }
+
+    setLoading(btn, true);
+
+    try {
+        const response = await fetch(`${API_BASE}/delete_exam/${examId}`, {
+            method: "DELETE"
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'فشل في حذف الامتحان');
+        }
+
+        showAlert('examsAlert', data.message || "تم حذف الامتحان بنجاح", true);
+        loadExams();
+    } catch (error) {
+        console.error('Error deleting exam:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء حذف الامتحان: ' + error.message, false);
+    } finally {
+        setLoading(btn, false);
+    }
+}
+
+// ... (بقية الدوال تبقى كما هي)
+
+// تعديل دالة تهيئة الصفحة لإضافة تحميل الامتحانات
+document.addEventListener('DOMContentLoaded', () => {
+    fetch(`${API_BASE}/init_db`, { method: 'POST' })
+        .then(response => response.json())
+        .then(() => {
+            loadStudents();
+            loadCourses();
+            loadExams();
+        })
+        .catch(error => {
+            console.error('Error initializing DB:', error);
+            loadStudents();
+            loadCourses();
+            loadExams();
+        });
+});
+// متغيرات البحث
+
+
+
+
+    // ============== وظائف عامة ==============
+    function showAlert(elementId, message, isSuccess = true) {
+      const alertElement = document.getElementById(elementId);
+      alertElement.textContent = message;
+      alertElement.className = `alert ${isSuccess ? 'alert-success' : 'alert-error'}`;
+      alertElement.style.display = 'block';
+      
+      setTimeout(() => {
+        alertElement.style.display = 'none';
+      }, 5000);
+    }
+
+    function setLoading(button, isLoading) {
+      if (isLoading) {
+        button.innerHTML = `<span class="loading"></span> ${button.textContent}`;
+        button.disabled = true;
+      } else {
+        button.querySelector('.loading')?.remove();
+        button.disabled = false;
+      }
+    }
+
+    // ============== وظائف التبويب ==============
+    function openTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      document.getElementById(tabName).classList.add('active');
+      document.querySelector(`.tab[onclick="openTab('${tabName}')"]`).classList.add('active');
+      
+      if (tabName === 'students') loadStudents();
+      if (tabName === 'courses') loadCourses();
+      if (tabName === 'exams') loadExams();
+    }
+
+    // ============== وظائف الطلاب ==============
+    function updateGradeOptions(stage) {
+      const gradeSelect = document.getElementById('grade');
+      const gradeGroup = document.getElementById('gradeGroup');
+      
+      gradeSelect.innerHTML = '';
+      gradeGroup.style.display = 'none';
+      
+      if (!stage) return;
+
+      gradeGroup.style.display = 'block';
+      
+      if (stage === 'ابتدائي') {
+        const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'اعدادي') {
+        const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'ثانوي') {
+        const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      }
+    }
+
+    function updateCourseGradeOptions(stage) {
+      const gradeGroup = document.getElementById('courseGradeGroup');
+      const gradeCheckboxes = document.getElementById('gradeCheckboxes');
+      
+      gradeCheckboxes.innerHTML = '';
+      gradeGroup.style.display = 'none';
+      
+      if (!stage || stage === 'عام') return;
+
+      gradeGroup.style.display = 'block';
+      
+      const grades = {
+        'ابتدائي': ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'],
+        'اعدادي': ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'],
+        'ثانوي': ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي']
+      };
+      
+      grades[stage].forEach(grade => {
+        const checkboxId = `grade_${grade.replace(/\s+/g, '_')}`;
+        gradeCheckboxes.innerHTML += `
+          <div class="grade-checkbox">
+            <input type="checkbox" id="${checkboxId}" value="${grade}">
+            <label for="${checkboxId}">${grade}</label>
+          </div>
+        `;
+      });
+    }
+
+    function updateFilterGradeOptions(stage) {
+      const gradeSelect = document.getElementById('filterGrade');
+      const gradeGroup = document.getElementById('filterGradeGroup');
+      
+      gradeSelect.innerHTML = '<option value="all">جميع الصفوف</option>';
+      gradeGroup.style.display = 'none';
+      
+      if (stage === 'all' || stage === 'عام') return;
+
+      gradeGroup.style.display = 'block';
+      
+      if (stage === 'ابتدائي') {
+        const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'اعدادي') {
+        const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'ثانوي') {
+        const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      }
+    }
+
+    function updateExamGradeOptions(stage) {
+      const gradeSelect = document.getElementById('exam_grade');
+      const gradeGroup = document.getElementById('examGradeGroup');
+      
+      gradeSelect.innerHTML = '';
+      gradeGroup.style.display = 'none';
+      
+      if (!stage || stage === 'عام') return;
+
+      gradeGroup.style.display = 'block';
+      
+      if (stage === 'ابتدائي') {
+        const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'اعدادي') {
+        const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      } 
+      else if (stage === 'ثانوي') {
+        const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+        grades.forEach(grade => {
+          gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
+        });
+      }
+    }
+
+    async function loadStudents() {
+      try {
+        const response = await fetch(`${API_BASE}/students`);
+        if (!response.ok) throw new Error('فشل في جلب بيانات الطلاب');
+        
+        allStudents = await response.json();
+        renderStudentsTable();
+      } catch (error) {
+        console.error('Error loading students:', error);
+        showAlert('studentsAlert', 'حدث خطأ أثناء تحميل بيانات الطلاب: ' + error.message, false);
+      }
+    }
+
+    function renderStudentsTable() {
+      const tbody = document.querySelector("#studentsTable tbody");
+      tbody.innerHTML = "";
+
+      if (allStudents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11">لا يوجد طلاب مسجلين</td></tr>`;
+        return;
+      }
+
+      allStudents.forEach(student => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${student.student_code}</td>
+          <td><input type="text" value="${student.full_name || ''}" onchange="updateStudentField(${student.id}, 'full_name', this.value)"></td>
+          <td>
+            <select onchange="updateStudentField(${student.id}, 'stage', this.value); updateStudentGradeOptions(${student.id}, this.value)">
+              <option value="ابتدائي" ${student.stage === 'ابتدائي' ? 'selected' : ''}>ابتدائي</option>
+              <option value="اعدادي" ${student.stage === 'اعدادي' ? 'selected' : ''}>اعدادي</option>
+              <option value="ثانوي" ${student.stage === 'ثانوي' ? 'selected' : ''}>ثانوي</option>
+            </select>
+          </td>
+          <td id="gradeCell${student.id}">
+            <select onchange="updateStudentField(${student.id}, 'grade', this.value)">
+              ${getGradeOptions(student.stage, student.grade)}
+            </select>
+          </td>
+          <td><input type="number" value="${student.age || ''}" onchange="updateStudentField(${student.id}, 'age', this.value)" min="6" max="30"></td>
+          <td><input type="email" value="${student.email || ''}" onchange="updateStudentField(${student.id}, 'email', this.value)"></td>
+          <td><input type="tel" value="${student.phone || ''}" onchange="updateStudentField(${student.id}, 'phone', this.value)"></td>
+          <td><input type="text" value="${student.guardian_name || ''}" onchange="updateStudentField(${student.id}, 'guardian_name', this.value)"></td>
+          <td><input type="tel" value="${student.guardian_phone || ''}" onchange="updateStudentField(${student.id}, 'guardian_phone', this.value)"></td>
+          <td><button class="action-btn edit-btn" onclick="saveStudentChanges(${student.id}, this)">حفظ</button></td>
+          <td><button class="action-btn delete-btn" onclick="deleteStudent(${student.id}, this)">حذف</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function getGradeOptions(stage, currentGrade) {
+      let options = '';
+      
+      if (stage === 'ابتدائي') {
+        const grades = ['رابعة ابتدائي', 'خامسة ابتدائي', 'سادسة ابتدائي'];
+        grades.forEach(grade => {
+          options += `<option value="${grade}" ${grade === currentGrade ? 'selected' : ''}>${grade}</option>`;
+        });
+      } 
+      else if (stage === 'اعدادي') {
+        const grades = ['أولى اعدادي', 'ثانية اعدادي', 'ثالثة اعدادي'];
+        grades.forEach(grade => {
+          options += `<option value="${grade}" ${grade === currentGrade ? 'selected' : ''}>${grade}</option>`;
+        });
+      } 
+      else if (stage === 'ثانوي') {
+        const grades = ['أولى ثانوي', 'ثانية ثانوي', 'ثالثة ثانوي'];
+        grades.forEach(grade => {
+          options += `<option value="${grade}" ${grade === currentGrade ? 'selected' : ''}>${grade}</option>`;
+        });
+      }
+      
+      return options;
+    }
+
+    function updateStudentGradeOptions(studentId, stage) {
+      const gradeCell = document.getElementById(`gradeCell${studentId}`);
+      const currentGrade = studentTempData[studentId]?.grade || 
+                         allStudents.find(s => s.id === studentId)?.grade;
+      
+      gradeCell.innerHTML = `
+        <select onchange="updateStudentField(${studentId}, 'grade', this.value)">
+          ${getGradeOptions(stage, currentGrade)}
+        </select>
+      `;
+    }
+
+    function updateStudentField(id, field, value) {
+      if (!studentTempData[id]) {
+        const student = allStudents.find(s => s.id === id);
+        studentTempData[id] = { ...student };
+      }
+      studentTempData[id][field] = value;
+      
+      if (field === 'stage') {
+        updateStudentGradeOptions(id, value);
+      }
+    }
+
+    async function saveStudentChanges(id, btn) {
+      const requiredFields = ['full_name', 'stage', 'grade', 'age', 'email', 'phone', 'guardian_name', 'guardian_phone'];
+      const missingFields = requiredFields.filter(field => !studentTempData[id]?.[field]);
+
+      if (missingFields.length > 0) {
+        showAlert('studentsAlert', `يجب ان تحدث تغير`, false);
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const response = await fetch(`${API_BASE}/edit_student/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(studentTempData[id])
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في تحديث بيانات الطالب");
+        }
+
+        const data = await response.json();
+        showAlert('studentsAlert', data.message || "تم تحديث بيانات الطالب بنجاح", true);
+        delete studentTempData[id];
+        loadStudents();
+      } catch (error) {
+        console.error('Error saving student:', error);
+        showAlert('studentsAlert', 'حدث خطأ أثناء حفظ التعديلات: ' + error.message, false);
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    async function deleteStudent(id, btn) {
+      if (!confirm("هل أنت متأكد من حذف هذا الطالب؟ لا يمكن التراجع عن هذه العملية.")) {
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const response = await fetch(`${API_BASE}/delete_student/${id}`, {
+          method: "DELETE"
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في حذف الطالب");
+        }
+
+        const data = await response.json();
+        showAlert('studentsAlert', data.message || "تم حذف الطالب بنجاح", true);
+        loadStudents();
+      } catch (error) {
+        console.error('Error deleting student:', error);
+        showAlert('studentsAlert', 'حدث خطأ أثناء حذف الطالب: ' + error.message, false);
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ============== وظائف الكورسات ==============
+    async function loadCourses() {
+      try {
+        const response = await fetch(`${API_BASE}/courses`);
+        if (!response.ok) throw new Error('فشل في جلب بيانات الكورسات');
+        
+        allCourses = await response.json();
+        filterCourses();
+      } catch (error) {
+        console.error('Error loading courses:', error);
+        showAlert('coursesAlert', 'حدث خطأ أثناء تحميل الكورسات: ' + error.message, false);
+      }
+    }
+
+    function filterCourses() {
+      const stageFilter = document.getElementById('filterStage').value;
+      const gradeFilter = document.getElementById('filterGrade')?.value || 'all';
+      const partFilter = document.getElementById('filterPart').value;
+      
+      const filteredCourses = allCourses.filter(course => {
+        const stageMatch = stageFilter === 'all' || course.stage === stageFilter || course.stage === 'عام';
+        const gradeMatch = gradeFilter === 'all' || course.grade === gradeFilter || course.grade === null;
+        const partMatch = partFilter === 'all' || course.part_id == partFilter;
+        return stageMatch && gradeMatch && partMatch;
+      });
+
+      renderCoursesTable(filteredCourses);
+    }
+
+    function renderCoursesTable(courses) {
+      const tbody = document.querySelector("#coursesTable tbody");
+      tbody.innerHTML = "";
+
+      if (courses.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7">لا توجد كورسات متاحة</td></tr>';
+        return;
+      }
+
+      courses.forEach(course => {
+        const videoId = extractYouTubeId(course.youtube_url);
+        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+        const partName = getPartName(course.part_id);
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${course.course_name}</td>
+          <td>${course.stage === 'عام' ? 'عام' : course.stage}</td>
+          <td>${course.grade || 'جميع الصفوف'}</td>
+          <td>${partName}</td>
+          <td>
+            ${thumbnailUrl ? 
+              `<img src="${thumbnailUrl}" class="youtube-thumbnail" 
+                   onclick="window.open('${course.youtube_url}', '_blank')" 
+                   title="اضغط للمشاهدة">` : 
+              'رابط غير صحيح'}
+          </td>
+          <td>${course.description || 'لا يوجد وصف'}</td>
+          <td><button class="action-btn delete-btn" onclick="deleteCourse(${course.id}, this)">حذف</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function extractYouTubeId(url) {
+      try {
+        const urlObj = new URL(url);
+        return urlObj.searchParams.get('v') || urlObj.pathname.split('/').pop();
+      } catch (e) {
+        const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&\n?#]+)/);
+        return match ? match[1] : null;
+      }
+    }
+
+    function getPartName(partId) {
+      switch(partId) {
+        case 1: return 'الشهر الأول';
+        case 2: return 'الشهر الثاني';
+        case 3: return 'الشهر الثالث';
+        default: return 'غير محدد';
+      }
+    }
+
+    async function deleteCourse(id, btn) {
+      if (!confirm("هل أنت متأكد من حذف هذا الكورس؟ لا يمكن التراجع عن هذه العملية.")) {
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const response = await fetch(`${API_BASE}/delete_course/${id}`, {
+          method: "DELETE"
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في حذف الكورس");
+        }
+
+        const data = await response.json();
+        showAlert('coursesAlert', data.message || "تم حذف الكورس بنجاح", true);
+        loadCourses();
+      } catch (error) {
+        console.error('Error deleting course:', error);
+        showAlert('coursesAlert', 'حدث خطأ أثناء حذف الكورس: ' + error.message, false);
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ============== وظائف الامتحانات ==============
+    async function loadExams() {
+      try {
+        const response = await fetch(`${API_BASE}/exams`);
+        if (!response.ok) throw new Error('فشل في جلب بيانات الامتحانات');
+        
+        allExams = await response.json();
+        renderExamsList();
+      } catch (error) {
+        console.error('Error loading exams:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء تحميل الامتحانات: ' + error.message, false);
+      }
+    }
+
+    function renderExamsList() {
+      const examsList = document.getElementById("examsList");
+      examsList.innerHTML = "";
+
+      if (allExams.length === 0) {
+        examsList.innerHTML = '<div class="alert">لا توجد امتحانات مسجلة</div>';
+        return;
+      }
+
+      allExams.forEach(exam => {
+        const examItem = document.createElement("div");
+        examItem.className = "exam-item";
+        examItem.innerHTML = `
+          <h3>${exam.exam_name}</h3>
+          <p>${exam.questions.length} سؤال - ${getPartName(exam.part_id)}</p>
+          <div class="exam-meta">
+            <span>المرحلة: ${exam.stage === 'عام' ? 'عامة' : exam.stage}</span>
+            <span>الصف: ${exam.grade || 'جميع الصفوف'}</span>
+          </div>
+          <div class="exam-actions">
+            <button class="action-btn delete-exam-btn" onclick="deleteExam(${exam.id}, this)">حذف الامتحان</button>
+          </div>
+        `;
+        examsList.appendChild(examItem);
+      });
+    }
+
+    function generateQuestionForm() {
+      const questionCount = parseInt(document.getElementById("question_count").value);
+      const questionsContainer = document.getElementById("questionsContainer");
+      questionsContainer.innerHTML = "";
+
+      for (let i = 1; i <= questionCount; i++) {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question-container";
+        questionDiv.innerHTML = `
+          <div class="question-header">
+            <div class="question-title">السؤال ${i}</div>
+            <button type="button" class="remove-question" onclick="this.parentElement.parentElement.remove()">حذف السؤال</button>
+          </div>
+          <div class="form-group">
+            <label for="question_${i}">نص السؤال:</label>
+            <input type="text" id="question_${i}" name="questions[${i}][text]" required>
+          </div>
+          <div class="form-group">
+            <label>الاختيارات:</label>
+            <div id="options_${i}">
+              <div class="option-item">
+                <input type="text" name="questions[${i}][options][0]" placeholder="الاختيار الأول" required>
+                <input type="radio" name="questions[${i}][correct]" value="0" required> صح
+              </div>
+              <div class="option-item">
+                <input type="text" name="questions[${i}][options][1]" placeholder="الاختيار الثاني" required>
+                <input type="radio" name="questions[${i}][correct]" value="1"> صح
+              </div>
+            </div>
+            <button type="button" class="add-option" onclick="addOption(${i})">إضافة اختيار</button>
+          </div>
+        `;
+        questionsContainer.appendChild(questionDiv);
+      }
+
+      document.getElementById("saveExamBtn").style.display = "block";
+    }
+
+    function addOption(questionId) {
+      const optionsContainer = document.getElementById(`options_${questionId}`);
+      const optionCount = optionsContainer.children.length;
+      
+      if (optionCount >= 5) {
+        alert("الحد الأقصى للاختيارات هو 5");
+        return;
+      }
+
+      const optionDiv = document.createElement("div");
+      optionDiv.className = "option-item";
+      optionDiv.innerHTML = `
+        <input type="text" name="questions[${questionId}][options][${optionCount}]" placeholder="الاختيار ${optionCount + 1}" required>
+        <input type="radio" name="questions[${questionId}][correct]" value="${optionCount}"> صح
+      `;
+      optionsContainer.appendChild(optionDiv);
+    }
+
+
+
+    function showExamPreview(exam) {
+      const previewHtml = `
+        <div class="exam-preview">
+          <h2>${exam.exam_name}</h2>
+          <p>${getPartName(exam.part_id)} - ${exam.stage === 'عام' ? 'عام' : exam.stage} ${exam.grade ? '- ' + exam.grade : ''}</p>
+          <hr>
+          ${exam.questions.map((q, i) => `
+            <div class="question-preview">
+              <h4>السؤال ${i + 1}: ${q.text}</h4>
+              <ul>
+                ${q.options.map((opt, j) => `
+                  <li style="${j == q.correct ? 'color:green;font-weight:bold' : ''}">${opt}</li>
+                `).join('')}
+              </ul>
+            </div>
+          `).join('')}
+          <button onclick="document.getElementById('examPreviewModal').remove()" style="margin-top:20px;">إغلاق</button>
+        </div>
+      `;
+
+      const modal = document.createElement("div");
+      modal.id = "examPreviewModal";
+      modal.style.position = "fixed";
+      modal.style.top = "0";
+      modal.style.left = "0";
+      modal.style.width = "100%";
+      modal.style.height = "100%";
+      modal.style.backgroundColor = "rgba(0,0,0,0.8)";
+      modal.style.zIndex = "1000";
+      modal.style.display = "flex";
+      modal.style.justifyContent = "center";
+      modal.style.alignItems = "center";
+      modal.style.color = "#333";
+      
+      const content = document.createElement("div");
+      content.style.backgroundColor = "white";
+      content.style.padding = "30px";
+      content.style.borderRadius = "10px";
+      content.style.maxWidth = "800px";
+      content.style.maxHeight = "80vh";
+      content.style.overflowY = "auto";
+      content.innerHTML = previewHtml;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+    }
+
+    async function deleteExam(examId, btn) {
+      if (!confirm("هل أنت متأكد من حذف هذا الامتحان؟ لا يمكن التراجع عن هذه العملية.")) {
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const response = await fetch(`${API_BASE}/delete_exam/${examId}`, {
+          method: "DELETE"
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في حذف الامتحان");
+        }
+
+        const data = await response.json();
+        showAlert('examsAlert', data.message || "تم حذف الامتحان بنجاح", true);
+        loadExams();
+      } catch (error) {
+        console.error('Error deleting exam:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء حذف الامتحان: ' + error.message, false);
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ============== أحداث النماذج ==============
+    document.getElementById("addStudentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = document.getElementById('addStudentBtn');
+      
+      setLoading(submitBtn, true);
+
+      try {
+        const jsonData = {
+          student_code: form.student_code.value,
+          full_name: form.full_name.value,
+          stage: form.stage.value,
+          grade: form.grade.value,
+          age: form.age.value,
+          email: form.email.value,
+          phone: form.phone.value,
+          guardian_name: form.guardian_name.value,
+          guardian_phone: form.guardian_phone.value
+        };
+
+        const response = await fetch(`${API_BASE}/add_student`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonData)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في إضافة الطالب");
+        }
+
+        const data = await response.json();
+        showAlert('studentsAlert', data.message || "تمت إضافة الطالب بنجاح", true);
+        form.reset();
+        document.getElementById('gradeGroup').style.display = 'none';
+        loadStudents();
+      } catch (error) {
+        console.error('Error adding student:', error);
+        showAlert('studentsAlert', 'خطأ  :  كود الطالب مستخدم من قبل' , false);
+      } finally {
+        setLoading(submitBtn, false);
+      }
+    });
+
+    document.getElementById("addCourseForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = document.getElementById('addCourseBtn');
+      
+      setLoading(submitBtn, true);
+
+      try {
+        const stage = form.stage.value;
+        let grades = [];
+        
+        if (stage !== 'عام') {
+          const checkboxes = document.querySelectorAll('#gradeCheckboxes input[type="checkbox"]:checked');
+          grades = Array.from(checkboxes).map(cb => cb.value);
+          
+          if (grades.length === 0) {
+            throw new Error('يجب تحديد صف واحد على الأقل');
+          }
+        }
+
+        const jsonData = {
+          course_name: form.course_name.value,
+          youtube_url: form.youtube_url.value,
+          description: form.description.value,
+          stage: stage,
+          grades: grades,
+          part_id: form.part_id.value
+        };
+
+        const response = await fetch(`${API_BASE}/add_course`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonData)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في إضافة الكورس");
+        }
+
+        const data = await response.json();
+        showAlert('coursesAlert', data.message || "تمت إضافة الكورس بنجاح", true);
+        form.reset();
+        document.getElementById('courseGradeGroup').style.display = 'none';
+        loadCourses();
+      } catch (error) {
+        console.error('Error adding course:', error);
+        showAlert('coursesAlert', 'حدث خطأ أثناء إضافة الكورس: ' + error.message, false);
+      } finally {
+        setLoading(submitBtn, false);
+      }
+    });
+
+    document.getElementById("examForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = document.getElementById('saveExamBtn');
+      
+      setLoading(submitBtn, true);
+
+      try {
+        // جمع بيانات الأسئلة
+        const questions = [];
+        const questionInputs = document.querySelectorAll('[name^="questions["]');
+        const questionIndices = [...new Set(
+          Array.from(questionInputs).map(input => input.name.match(/questions\[(\d+)\]/)[1])
+        )];
+
+        for (const index of questionIndices) {
+          const text = document.querySelector(`[name="questions[${index}][text]"]`).value;
+          const options = Array.from(document.querySelectorAll(`[name="questions[${index}][options][]"]`)).map(opt => opt.value);
+          const correct = document.querySelector(`[name="questions[${index}][correct]"]:checked`).value;
+
+          questions.push({
+            text: text,
+            options: options,
+            correct: parseInt(correct)
+          });
+        }
+
+        const jsonData = {
+          exam_name: form.exam_name.value,
+          part_id: form.part_id.value,
+          stage: form.stage.value,
+          grade: form.stage.value === 'عام' ? null : form.grade.value,
+          questions: questions
+        };
+
+        const response = await fetch(`${API_BASE}/add_exam`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonData)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "فشل في حفظ الامتحان");
+        }
+
+        const data = await response.json();
+        showAlert('examsAlert', data.message || "تم حفظ الامتحان بنجاح", true);
+        form.reset();
+        document.getElementById('questionsContainer').innerHTML = "";
+        document.getElementById('saveExamBtn').style.display = "none";
+        loadExams();
+      } catch (error) {
+        console.error('Error saving exam:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء حفظ الامتحان: ' + error.message, false);
+      } finally {
+        setLoading(submitBtn, false);
+      }
+    });
+
+    document.getElementById("generateQuestionsBtn").addEventListener("click", generateQuestionForm);
+    document.getElementById("exam_stage").addEventListener("change", function() {
+      updateExamGradeOptions(this.value);
+    });
+
+    // ============== تهيئة الصفحة ==============
+    document.addEventListener('DOMContentLoaded', () => {
+      // تهيئة قاعدة البيانات أولاً
+      fetch(`${API_BASE}/init_db`, { method: 'POST' })
+        .then(response => {
+          if (!response.ok) throw new Error('فشل في تهيئة قاعدة البيانات');
+          return response.json();
+        })
+        .then(data => {
+          console.log(data.message);
+          // تحميل البيانات بعد التهيئة
+          loadStudents();
+          loadCourses();
+          loadExams();
+        })
+        .catch(error => {
+          console.error('Error initializing database:', error);
+          // مع ذلك حاول تحميل البيانات
+          loadStudents();
+          loadCourses();
+          loadExams();
+        });
+    });
+    // ====== دوال الامتحانات ======
+async function loadExams() {
+    try {
+        const response = await fetch(`${API_BASE}/exams`);
+        if (!response.ok) throw new Error('فشل في جلب الامتحانات');
+        
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error || 'خطأ في بيانات الامتحانات');
+        
+        allExams = data.exams || [];
+        renderExamsList();
+    } catch (error) {
+        console.error('Error loading exams:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء جلب الامتحانات: ' + error.message, false);
+    }
+}
+
+function renderExamsList() {
+    const examsList = document.getElementById("examsList");
+    examsList.innerHTML = "";
+
+    if (allExams.length === 0) {
+        examsList.innerHTML = '<div class="alert">لا توجد امتحانات مسجلة</div>';
+        return;
+    }
+
+    allExams.forEach(exam => {
+        const examItem = document.createElement("div");
+        examItem.className = "exam-item";
+        examItem.innerHTML = `
+            <h3>${exam.exam_name}</h3>
+            <p>${exam.questions?.length || 0} سؤال - ${exam.part_name || getPartName(exam.part_id)}</p>
+            <div class="exam-meta">
+                <span>المرحلة: ${exam.stage === 'عام' ? 'عامة' : exam.stage}</span>
+                ${exam.grade ? `<span>الصف: ${exam.grade}</span>` : ''}
+            </div>
+            <div class="exam-actions">
+                <button class="action-btn delete-exam-btn" onclick="deleteExam(${exam.id}, this)">حذف الامتحان</button>
+            </div>
+        `;
+        examsList.appendChild(examItem);
+    });
+}
+
+async function saveExam(e) {
+    e.preventDefault();
+    const form = e.target;
+    const submitBtn = document.getElementById('saveExamBtn');
+    
+    setLoading(submitBtn, true);
+
+    try {
+        // جمع بيانات الأسئلة
+        const questions = [];
+        const questionElements = document.querySelectorAll('.question-container');
+        
+        questionElements.forEach((qElement, index) => {
+            const questionText = qElement.querySelector('input[name^="questions["]').value;
+            const options = Array.from(qElement.querySelectorAll('input[name^="questions["][type="text"]')).map(opt => opt.value);
+            const correct = qElement.querySelector('input[name^="questions["][type="radio"]:checked')?.value;
+            
+            if (!questionText || options.some(opt => !opt) || !correct) {
+                throw new Error(`الرجاء إكمال جميع بيانات السؤال ${index + 1}`);
+            }
+            
+            questions.push({
+                text: questionText,
+                options: options,
+                correct: parseInt(correct)
+            });
+        });
+
+        const examData = {
+            exam_name: form.exam_name.value,
+            part_id: form.part_id.value,
+            stage: form.stage.value,
+            grade: form.stage.value === 'عام' ? null : form.grade.value,
+            questions: questions
+        };
+
+        const response = await fetch(`${API_BASE}/add_exam`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(examData)
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'فشل في حفظ الامتحان');
+        }
+
+        showAlert('examsAlert', data.message || "تم حفظ الامتحان بنجاح", true);
+        form.reset();
+        document.getElementById('questionsContainer').innerHTML = "";
+        document.getElementById('saveExamBtn').style.display = "none";
+        loadExams();
+    } catch (error) {
+        console.error('Error saving exam:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء حفظ الامتحان: ' + error.message, false);
+    } finally {
+        setLoading(submitBtn, false);
+    }
+}
+
+async function deleteExam(examId, btn) {
+    if (!confirm("هل أنت متأكد من حذف هذا الامتحان؟ لا يمكن التراجع عن هذه العملية.")) {
+        return;
+    }
+
+    setLoading(btn, true);
+
+    try {
+        const response = await fetch(`${API_BASE}/delete_exam/${examId}`, {
+            method: "DELETE"
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'فشل في حذف الامتحان');
+        }
+
+        showAlert('examsAlert', data.message || "تم حذف الامتحان بنجاح", true);
+        loadExams();
+    } catch (error) {
+        console.error('Error deleting exam:', error);
+        showAlert('examsAlert', 'حدث خطأ أثناء حذف الامتحان: ' + error.message, false);
+    } finally {
+        setLoading(btn, false);
+    }
+}
+
+// ... (بقية الدوال تبقى كما هي)
+
+// تعديل دالة تهيئة الصفحة لإضافة تحميل الامتحانات
+document.addEventListener('DOMContentLoaded', () => {
+    fetch(`${API_BASE}/init_db`, { method: 'POST' })
+        .then(response => response.json())
+        .then(() => {
+            loadStudents();
+            loadCourses();
+            loadExams();
+            loadExams().then(filterExams);
+        })
+        .catch(error => {
+            console.error('Error initializing DB:', error);
+            loadStudents();
+            loadCourses();
+            loadExams();
+            loadExams().then(filterExams);
+        });
+        loadExams().then(filterExams);
+});
+
+// متغيرات البحث
+let currentSearchParams = {
+    query: '',
+    part_id: 'all',
+    stage: 'all',
+    grade: 'all'
+};
+
+// دالة البحث عن الامتحانات
+async function searchExams(params = {}) {
+    try {
+        // بناء رابط البحث مع المعلمات
+        const queryString = new URLSearchParams({
+            query: params.query || '',
+            part_id: params.part_id || 'all',
+            stage: params.stage || 'all',
+            grade: params.grade || 'all'
+        }).toString();
+
+        const response = await fetch(`${API_BASE}/search_exams?${queryString}`);
+        
+        if (!response.ok) {
+            throw new Error('فشل في جلب نتائج البحث');
+        }
+
+        const data = await response.json();
+        
+        if (!data.success) {
+            throw new Error(data.error || 'خطأ في بيانات البحث');
+        }
+
+        return data.exams || [];
+    } catch (error) {
+        console.error('Error searching exams:', error);
+        showAlert('examsAlert', `خطأ في البحث: ${error.message}`, false);
+        return [];
+    }
+}
+
+// دالة عرض نتائج البحث
+function renderExamSearchResults(exams) {
+    const examsList = document.getElementById("examsList");
+    examsList.innerHTML = "";
+
+    if (!exams || exams.length === 0) {
+        examsList.innerHTML = `
+            <div class="alert">
+                لا توجد امتحانات متطابقة مع معايير البحث
+            </div>
+        `;
+        return;
+    }
+
+    exams.forEach(exam => {
+        const examItem = document.createElement("div");
+        examItem.className = "exam-item";
+        examItem.innerHTML = `
+            <h3>${exam.exam_name}</h3>
+            <div class="exam-meta">
+                <span>${exam.part_name}</span>
+                <span>${exam.stage === 'عام' ? 'عام' : exam.stage}</span>
+                ${exam.grade ? `<span>${exam.grade}</span>` : ''}
+                <span>${exam.questions.length} سؤال</span>
+            </div>
+            <div class="exam-actions">
+                <button class="action-btn" 
+                        onclick="viewExamDetails(${exam.id})">
+                    عرض التفاصيل
+                </button>
+                <button class="action-btn delete-btn"
+                        onclick="deleteExam(${exam.id}, this)">
+                    حذف
+                </button>
+            </div>
+        `;
+        examsList.appendChild(examItem);
+    });
+}
+
+// دالة عرض تفاصيل الامتحان
+function viewExamDetails(examId) {
+    // يمكنك تنفيذ هذه الدالة حسب احتياجاتك
+    console.log("عرض امتحان:", examId);
+    // window.open(`exam.html?id=${examId}`, '_blank');
+}
+
+// دالة تنفيذ البحث عند تغيير المعايير
+async function performSearch() {
+    const exams = await searchExams(currentSearchParams);
+    renderExamSearchResults(exams);
+}
+
+// أحداث واجهة البحث
+document.getElementById("examSearchInput").addEventListener("input", (e) => {
+    currentSearchParams.query = e.target.value;
+    performSearch();
+});
+
+document.getElementById("examPartFilter").addEventListener("change", (e) => {
+    currentSearchParams.part_id = e.target.value;
+    performSearch();
+});
+
+document.getElementById("examStageFilter").addEventListener("change", (e) => {
+    currentSearchParams.stage = e.target.value;
+    // إعادة تعيين الصف عند تغيير المرحلة
+    currentSearchParams.grade = 'all'; 
+    document.getElementById("examGradeFilter").value = 'all';
+    performSearch();
+});
+
+document.getElementById("examGradeFilter").addEventListener("change", (e) => {
+    currentSearchParams.grade = e.target.value;
+    performSearch();
+});
   </script>
+  
 </body>
 </html>

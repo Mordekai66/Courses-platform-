@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان - نظام الاختبارات</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .exam-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timer {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .options {
+            margin-right: 20px;
+        }
+        
+        .option {
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-container">
+        <h1 id="exam-title">اسم الامتحان</h1>
+        <div class="timer" id="timer">الوقت المتبقي: 30:00</div>
+        
+        <div id="questions-container">
+            <!-- الأسئلة تظهر هنا -->
+        </div>
+        
+        <button id="submit-exam">تسليم الامتحان</button>
+    </div>
+
+    <script src="exam-script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // بيانات الامتحان (عادة تأتي من API)
+    const examData = {
+        id: 1,
+        title: "امتحان الرياضيات النهائي",
+        duration_minutes: 30,
+        questions: [
+            {
+                id: 1,
+                text: "ما هو ناتج 5 × 7؟",
+                options: ["30", "35", "40", "45"],
+                correct: 1
+            },
+            {
+                id: 2,
+                text: "ما هو الجذر التربيعي للعدد 64؟",
+                options: ["6", "7", "8", "9"],
+                correct: 2
+            }
+            // يمكن إضافة المزيد من الأسئلة
+        ]
+    };
+
+    // عناصر DOM
+    const examTitle = document.getElementById('exam-title');
+    const timerElement = document.getElementById('timer');
+    const questionsContainer = document.getElementById('questions-container');
+    const submitBtn = document.getElementById('submit-exam');
+
+    // عرض بيانات الامتحان
+    function renderExam() {
+        examTitle.textContent = examData.title;
+        
+        examData.questions.forEach((question, index) => {
+            const questionElement = document.createElement('div');
+            questionElement.className = 'question';
+            questionElement.innerHTML = `
+                <h3>السؤال ${index + 1}: ${question.text}</h3>
+                <div class="options">
+                    ${question.options.map((option, i) => `
+                        <div class="option">
+                            <input type="radio" id="q${question.id}_opt${i}" name="q${question.id}" value="${i}">
+                            <label for="q${question.id}_opt${i}">${option}</label>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            questionsContainer.appendChild(questionElement);
+        });
+    }
+
+    // العداد التنازلي
+    function startTimer() {
+        let timeLeft = examData.duration_minutes * 60; // تحويل الدقائق إلى ثواني
+        
+        const timer = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            timerElement.textContent = `الوقت المتبقي: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timerElement.textContent = "انتهى وقت الامتحان!";
+                timerElement.style.backgroundColor = "#ff0000";
+                submitExam();
+            }
+            
+            timeLeft--;
+        }, 1000);
+    }
+
+    // تسليم الامتحان
+    function submitExam() {
+        // جمع الإجابات
+        const answers = [];
+        examData.questions.forEach(question => {
+            const selectedOption = document.querySelector(`input[name="q${question.id}"]:checked`);
+            answers.push({
+                questionId: question.id,
+                answer: selectedOption ? parseInt(selectedOption.value) : null
+            });
+        });
+        
+        // هنا يمكنك إرسال الإجابات إلى الخادم
+        console.log("الإجابات المقدمة:", answers);
+        alert("تم تسليم الامتحان بنجاح!");
+        
+        // تعطيل زر التسليم
+        submitBtn.disabled = true;
+    }
+
+    // أحداث
+    submitBtn.addEventListener('click', submitExam);
+
+    // بدء العرض والعداد
+    renderExam();
+    startTimer();
+});
+async function loadExam(examId) {
+    try {
+        const response = await fetch(`/api/exams/${examId}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error loading exam:', error);
+        return null;
+    }
+}
+
+// استخدامها:
+const examId = 123; // ID الامتحان المطلوب
+const examData = await loadExam(examId);
+if (examData) {
+    renderExam();
+    startTimer();
+}
+    </script>
+</body>
+</html>

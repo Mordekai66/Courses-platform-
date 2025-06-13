@@ -1,213 +1,305 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="homeloged.css">
-    <link rel="stylesheet" href="home.css">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>منصة التعلم</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fafafa;
+      color: #333;
+      margin: 0; padding: 0;
+    }
+    header {
+      background-color: #2E7D32;
+      padding: 15px 20px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #ddd;
+    }
+    button {
+      cursor: pointer;
+      background-color: #6c63ff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 15px;
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #4e47d2;
+    }
+    .accordion {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 0 10px;
+    }
+    .accordion-item {
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+    .accordion-header {
+      padding: 15px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: #e8f5e9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    .accordion-header:hover {
+      background-color: #c8e6c9;
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 20px;
+      background: #f9f9f9;
+    }
+    .accordion-content.open {
+      padding: 15px 20px;
+      max-height: 1000px;
+    }
+    .course {
+      margin-bottom: 15px;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .course h4 {
+      margin: 0 0 8px 0;
+    }
+    .course p {
+      margin: 0 0 8px 0;
+      color: #555;
+    }
+    .course a {
+      display: inline-block;
+      text-decoration: none;
+      background-color: #6c63ff;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .course a:hover {
+      background-color: #4e47d2;
+    }
+    footer {
+      text-align: center;
+      margin: 40px 0 20px;
+      color: #666;
+    }
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-weight: bold;
+    }
+    .error {
+      color: red;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <a href="loged.html">🏠 الصفحة الرئيسية</a>
+    <div>
+      <button id="toggleDarkMode">🌙</button>
+      <button onclick="logout()">تسجيل خروج</button>
+    </div>
+  </header>
 
-    <header>
-        <a href="loged.html"><img src="assets/logo2.svg" alt="logo"></a>   
-        <nav class="navigation">
-            <ul>
-                <li><button id="darkModeToggle" class="dark-mode-btn">
-                    <span class="icon">🌙</span>
-                  </button>
-                  </li>
-                <li><button onclick="logout()" style="margin-top: 10px;">تسجيل الخروج</button></li>
-                <!-- <li><a href="login.html" class="fancy-link">تسجيل الدخول</a></li> -->
-                <!-- <li><a href="#courses" class="fancy-link">Courses</a></li> -->
-                <li><a href="profile.html" class="fancy-link">👨‍🎓</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <hr>
-
-    <section class="coursehero">
-        
-      <!-- <img src="assets/svg/arrow.svg" alt="arrow" class="arrow"> -->
-      <div class="heroSup">
-          <h1  class="coursetit">منورنا يا بطل</h1>
-          <h2 id="studentName" style="margin: 10px 0;"></h2>
-          <p id="studentCourse" style="font-weight: bold;"></p>
-          <h1  class="coursedis">شد الهمة يا بطل كورساتك اهيه<br></h1>
-          <div class="heroBtns">
-              <!-- <a href="https://www.youtube.com/watch?v=oLrW6UsQqnQ" class="Contact">ازاي اسجل في المنصة</a> -->
-              <!-- <a href="#download" class="Hi" download >Download<img src="assets/svg/download.svg" alt="icon"></a> -->
-          </div>
-      </div>
-      <!-- <img src="assets/hero.jpg" alt="hero" class="heroimg"> -->
+  <main>
+    <section style="max-width: 800px; margin: 30px auto; padding: 0 10px;">
+      <h1 id="welcomeMsg">مرحبًا بك!</h1>
+      <h3 id="studentStage"></h3>
     </section>
 
-    <div class="card-container">
-        <div class="card">
-          <img src="assets/1.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان الكارد</h3>
-            <p>وصف بسيط للكارد عشان توضح الفكرة.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
+    <div id="loadingIndicator" class="loading">جاري تحميل الكورسات...</div>
+    <div id="errorMessage" class="error" style="display: none;"></div>
+
+    <section class="accordion" id="coursesAccordion">
+      <!-- سيتم ملء الكورسات هنا ديناميكيًا -->
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 جميع الحقوق محفوظة | Shika & monem
+  </footer>
+
+  <script>
+    // جلب بيانات الطالب من localStorage
+    function getStudent() {
+      const student = localStorage.getItem("student");
+      if (!student) {
+        alert("الرجاء تسجيل الدخول أولاً.");
+        window.location.href = "login.html";
+        return null;
+      }
+      return JSON.parse(student);
+    }
+
+    // عرض بيانات الطالب
+    function showStudentData(student) {
+      const welcomeMsg = document.getElementById("welcomeMsg");
+      const stage = document.getElementById("studentStage");
+      welcomeMsg.textContent = `مرحبًا ${student.full_name || "بالطالب"}`;
+      stage.textContent = `المرحلة: ${student.stage} - الصف: ${student.grade}`;
+    }
+
+    // جلب الكورسات من الخادم
+    async function fetchCourses(studentCode) {
+      const loadingIndicator = document.getElementById("loadingIndicator");
+      const errorMessage = document.getElementById("errorMessage");
       
-        <div class="card">
-          <img src="assets/3.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان آخر</h3>
-            <p>وصف بسيط آخر للكارد التانية.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="assets/3.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان آخر</h3>
-            <p>وصف بسيط آخر للكارد التانية.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="assets/3.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان آخر</h3>
-            <p>وصف بسيط آخر للكارد التانية.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="assets/3.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان آخر</h3>
-            <p>وصف بسيط آخر للكارد التانية.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="assets/3.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان آخر</h3>
-            <p>وصف بسيط آخر للكارد التانية.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="assets/3.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان آخر</h3>
-            <p>وصف بسيط آخر للكارد التانية.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="assets/3.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان آخر</h3>
-            <p>وصف بسيط آخر للكارد التانية.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="assets/3.png" alt="Card Image">
-          <div class="card-content">
-            <h3>عنوان آخر</h3>
-            <p>وصف بسيط آخر للكارد التانية.</p>
-            <a href="lecture.html" class="card-button">
-                شاهد المزيد
-                <i class="fas fa-arrow-right icon"></i>
-              </a>
-              
-          </div>
-        </div>
-
+      try {
+        loadingIndicator.style.display = "block";
+        errorMessage.style.display = "none";
         
-      </div>
+        const response = await fetch(`http://localhost:5000/student_courses/${studentCode}`);
+        
+        if (!response.ok) {
+          throw new Error(`خطأ في الخادم: ${response.status}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          throw new Error("تلقينا استجابة غير متوقعة من الخادم");
+        }
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+          throw new Error(data.error || "حدث خطأ في جلب البيانات");
+        }
+        
+        return data.courses_by_part || {};
+        
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        errorMessage.textContent = `حدث خطأ: ${error.message}`;
+        errorMessage.style.display = "block";
+        return {};
+      } finally {
+        loadingIndicator.style.display = "none";
+      }
+    }
 
-      <a href="#support" class="support-button">
-        💬
-        <span class="tooltip-text">دعم المنصة</span>
-      </a>
+    // إنشاء أكورديون الكورسات
+    function createAccordion(coursesByPart) {
+    const container = document.getElementById("coursesAccordion");
+    container.innerHTML = "";
+
+    // ترتيب الأشهر كما يجب (الأول ثم الثاني ثم الثالث)
+    const monthOrder = {
+        "الشهر الأول": 1,
+        "الشهر الثاني": 2,
+        "الشهر الثالث": 3
+    };
+
+    // تحويل الكائن إلى مصفوفة وفرزها حسب الترتيب المحدد
+    const sortedMonths = Object.keys(coursesByPart)
+        .filter(month => monthOrder[month])
+        .sort((a, b) => monthOrder[a] - monthOrder[b]);
+
+    if (sortedMonths.length === 0) {
+        container.innerHTML = '<div class="error">لا توجد كورسات متاحة حاليًا</div>';
+        return;
+    }
+
+    sortedMonths.forEach(month => {
+        const courses = coursesByPart[month];
+        if (courses.length === 0) return;
+
+        const item = document.createElement("div");
+        item.className = "accordion-item";
+
+        const header = document.createElement("div");
+        header.className = "accordion-header";
+        header.innerHTML = `
+            ${month}
+            <span>▼</span>
+        `;
+
+        const content = document.createElement("div");
+        content.className = "accordion-content";
+
+        courses.forEach(course => {
+            const courseDiv = document.createElement("div");
+            courseDiv.className = "course";
+            courseDiv.innerHTML = `
+                <h4>${course.course_name}</h4>
+                ${course.description ? `<p>${course.description}</p>` : ''}
+                <a href="${course.youtube_url}" target="_blank">مشاهدة الكورس</a>
+            `;
+            content.appendChild(courseDiv);
+        });
+
+        item.appendChild(header);
+        item.appendChild(content);
+        container.appendChild(item);
+
+        header.addEventListener("click", () => {
+            const isOpen = content.classList.contains("open");
+            document.querySelectorAll(".accordion-content").forEach(c => {
+                c.classList.remove("open");
+            });
+            if (!isOpen) {
+                content.classList.add("open");
+            }
+        });
+    });
+}
+    // تسجيل خروج
+    function logout() {
+      localStorage.removeItem("student");
+      window.location.href = "login.html";
+    }
+
+    // تبديل الوضع الداكن
+    const darkModeBtn = document.getElementById("toggleDarkMode");
+    darkModeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      if(document.body.classList.contains("dark-mode")){
+        darkModeBtn.textContent = "☀️";
+      } else {
+        darkModeBtn.textContent = "🌙";
+      }
+    });
+
+    // بداية التحميل
+    window.onload = async () => {
+      const student = getStudent();
+      if(!student) return;
       
-
-      <hr />
-      <footer>
-        <p> Built by Shika & monem
-        </p>
-      </footer>
+      showStudentData(student);
       
-      <script src="script.js"></script>
-
-      <script>
-  // جلب بيانات الطالب من التخزين
-  const student = JSON.parse(localStorage.getItem("student"));
-
-  if (!student) {
-    // لو مفيش بيانات → يرجعه لصفحة تسجيل الدخول
-    window.location.href = "login.html";
-  } else {
-    // عرض البيانات
-    document.getElementById("studentName").innerText = `مرحبًا ${student.name} 👋`;
-    document.getElementById("studentCourse").innerText = `أنت مسجل في: ${student.course}`;
-
-    // عرض رسالة ترحيب مؤقتة
-    const message = document.createElement("div");
-    message.innerText = "✅ تم تسجيل الدخول بنجاح";
-    message.style.cssText = "background: #d4edda; color: #155724; padding: 10px; margin: 20px auto; width: fit-content; border-radius: 6px;";
-    document.body.insertBefore(message, document.body.children[1]); // قبل المحتوى الرئيسي
-
-    // إزالة الرسالة بعد 3 ثواني (اختياري)
-    setTimeout(() => message.remove(), 3000);
-  }
-
-  function logout() {
-    localStorage.removeItem("student");
-    window.location.href = "login.html";
-  }
-</script>
-
-
-
-
+      // جلب الكورسات من الخادم
+      const coursesByPart = await fetchCourses(student.student_code);
+      createAccordion(coursesByPart);
+    };
+  </script>
 </body>
 </html>
